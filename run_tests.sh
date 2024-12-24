@@ -6,6 +6,7 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 BOLD='\033[1m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 RESUME="Data/Resumes/A_Abdo_Resume_July_2024.pdf"
@@ -19,8 +20,8 @@ for jd in ${JD_DIR}/job_desc_*.pdf; do
     echo -e "${BLUE}📋 Job Description:${NC} $(basename $jd)"
     echo -e "${YELLOW}${DIVIDER}${NC}\n"
     
-    CMD="time python match_resume_jd_optimized.py \"$RESUME\" \"$jd\""
-    echo -e "${BOLD}⏳ Running:${NC} $CMD\n"
+    CMD="python match_resume_jd_optimized.py \"$RESUME\" \"$jd\""
+    echo -e "${BOLD}⏳ Running:${NC} ${CYAN}$CMD${NC}\n"
     time eval "$CMD"
     
     echo -e "\n${YELLOW}${DIVIDER}${NC}\n"
