@@ -2,64 +2,159 @@
     "technical": {
         "data": [
             "Data Scientist", "Data Analyst", "Data Engineer", "Machine Learning Engineer", 
-            "AI Engineer", "Business Intelligence Analyst", "Data Architect"
+            "AI Engineer", "Business Intelligence Analyst", "Data Architect",
+            "Database Administrator", "ETL Developer", "Analytics Manager",
+            "Quantitative Analyst", "Statistical Analyst", "Big Data Engineer",
+            "Data Quality Analyst", "Data Governance Manager", "Data Visualization Specialist",
+            "Data Privacy Officer", "Data Operations Manager", "NLP Engineer",
+            "Computer Vision Engineer", "Deep Learning Engineer"
         ],
         "software": [
             "Software Engineer", "Full Stack Developer", "Frontend Developer", 
             "Backend Developer", "Mobile Developer", "DevOps Engineer", "System Architect",
-            "Cloud Engineer", "Security Engineer", "QA Engineer"
+            "Cloud Engineer", "Security Engineer", "QA Engineer",
+            "Embedded Systems Engineer", "Game Developer", "Blockchain Developer",
+            "AR/VR Developer", "API Developer", "Platform Engineer", "SRE",
+            "Technical Lead", "Software Architect", "Release Engineer",
+            "iOS Developer", "Android Developer", "React Developer", "Java Developer",
+            "Python Developer", "Ruby Developer", ".NET Developer", "Scala Developer",
+            "Golang Developer", "PHP Developer", "Unity Developer", "Unreal Developer",
+            "WebGL Developer", "Firmware Engineer", "FPGA Developer"
         ],
         "engineering": [
             "Mechanical Engineer", "Electrical Engineer", "Civil Engineer", 
             "Chemical Engineer", "Industrial Engineer", "Aerospace Engineer",
-            "Biomedical Engineer", "Environmental Engineer"
+            "Biomedical Engineer", "Environmental Engineer", "Robotics Engineer",
+            "Automation Engineer", "Manufacturing Engineer", "Process Engineer",
+            "Materials Engineer", "Nuclear Engineer", "Petroleum Engineer",
+            "Structural Engineer", "Systems Engineer", "Hardware Engineer",
+            "Mechatronics Engineer", "Optical Engineer", "Acoustical Engineer",
+            "Automotive Engineer", "Marine Engineer", "Mining Engineer",
+            "Geotechnical Engineer", "Photonics Engineer", "RF Engineer",
+            "Power Systems Engineer", "Control Systems Engineer", "HVAC Engineer",
+            "Packaging Engineer", "Quality Engineer", "Reliability Engineer"
+        ],
+        "infrastructure": [
+            "Network Engineer", "System Administrator", "Infrastructure Engineer",
+            "Network Administrator", "Cloud Architect", "Solutions Architect",
+            "IT Support", "Technical Support", "Help Desk Engineer",
+            "Security Analyst", "Information Security Manager", "Cybersecurity Engineer",
+            "Network Security Engineer", "Cloud Security Engineer", "SOC Analyst",
+            "Penetration Tester", "Security Consultant", "Vulnerability Analyst",
+            "Database Administrator", "Storage Engineer", "Virtualization Engineer",
+            "Windows Administrator", "Linux Administrator", "Unix Administrator"
         ]
     },
     "medical": {
         "practitioners": [
             "Doctor", "Surgeon", "Physician", "Psychiatrist", "Dentist",
-            "Emergency Physician", "Family Doctor"
+            "Emergency Physician", "Family Doctor", "Internal Medicine",
+            "OB/GYN", "Ophthalmologist", "ENT Specialist", "Urologist",
+            "Orthopedic Surgeon", "Pediatrician", "Cardiologist", "Neurologist",
+            "Dermatologist", "Endocrinologist", "Gastroenterologist", "Immunologist",
+            "Pathologist", "Pulmonologist"
         ],
         "nursing": [
             "Nurse", "Nurse Practitioner", "Clinical Nurse", "Registered Nurse",
-            "ICU Nurse", "Emergency Nurse"
+            "ICU Nurse", "Emergency Nurse", "Pediatric Nurse", "Surgical Nurse",
+            "Mental Health Nurse", "Nurse Anesthetist", "Nurse Educator",
+            "Pharmacist", "Dietitian", "Optometrist", "Chiropractor",
+            "Medical Laboratory Technician", "Radiologic Technologist"
         ],
         "specialists": [
             "Radiologist", "Anesthesiologist", "Cardiologist", "Neurologist",
-            "Oncologist", "Pediatrician", "Dermatologist"
+            "Oncologist", "Pediatrician", "Dermatologist", "Endocrinologist",
+            "Gastroenterologist", "Immunologist", "Pathologist", "Pulmonologist"
+        ],
+        "allied_health": [
+            "Physical Therapist", "Occupational Therapist", "Speech Therapist",
+            "Pharmacist", "Dietitian", "Optometrist", "Chiropractor",
+            "Medical Laboratory Technician", "Radiologic Technologist"
         ]
     },
     "business": {
         "management": [
             "Product Manager", "Project Manager", "Program Manager", 
             "Operations Manager", "Sales Manager", "Marketing Manager",
-            "General Manager", "Business Development Manager"
+            "General Manager", "Business Development Manager", "Account Manager",
+            "Supply Chain Manager", "Quality Manager", "Customer Success Manager",
+            "Chief Executive Officer", "Chief Operating Officer", "Chief Financial Officer",
+            "Chief Technology Officer", "Chief Marketing Officer", "Chief Product Officer",
+            "VP of Engineering", "VP of Sales", "VP of Marketing", "VP of Operations",
+            "Regional Manager", "District Manager", "Branch Manager", "Franchise Manager",
+            "Change Management Manager", "Innovation Manager", "Strategy Manager"
         ],
         "finance": [
             "Financial Analyst", "Accountant", "Investment Banker", 
-            "Financial Advisor", "Actuary", "Risk Analyst", "Tax Specialist"
+            "Financial Advisor", "Actuary", "Risk Analyst", "Tax Specialist",
+            "Portfolio Manager", "Wealth Manager", "Credit Analyst",
+            "Treasury Analyst", "Auditor", "Fund Manager", "Trader",
+            "Hedge Fund Manager", "Private Equity Associate", "Venture Capitalist",
+            "Quantitative Trader", "Algorithmic Trader", "Fixed Income Analyst",
+            "Equity Research Analyst", "Merger & Acquisition Analyst", "Corporate Finance Manager",
+            "Financial Controller", "Budget Analyst", "Cost Accountant", "Forensic Accountant",
+            "International Tax Specialist", "Transfer Pricing Specialist"
         ],
         "consulting": [
             "Business Consultant", "Management Consultant", "Strategy Consultant",
-            "IT Consultant", "Financial Consultant", "HR Consultant"
+            "IT Consultant", "Financial Consultant", "HR Consultant",
+            "Operations Consultant", "Risk Consultant", "Technology Consultant"
+        ],
+        "sales_marketing": [
+            "Sales Representative", "Marketing Specialist", "Digital Marketer",
+            "Brand Manager", "Market Research Analyst", "PR Specialist",
+            "Social Media Manager", "SEO Specialist", "Content Strategist",
+            "Growth Hacker", "Conversion Rate Optimizer", "Email Marketing Specialist",
+            "Marketing Operations Manager", "Demand Generation Manager", "ABM Manager",
+            "Performance Marketing Manager", "Affiliate Marketing Manager",
+            "Marketing Analytics Manager", "Marketing Automation Specialist",
+            "Sales Operations Manager", "Sales Enablement Manager", "Inside Sales Representative",
+            "Enterprise Sales Executive", "Channel Sales Manager", "Partner Manager"
         ]
     },
     "other": {
         "education": [
             "Teacher", "Professor", "Instructor", "Education Consultant",
-            "Academic Researcher", "School Administrator"
+            "Academic Researcher", "School Administrator", "Principal",
+            "Curriculum Developer", "Special Education Teacher", "Librarian"
         ],
         "legal": [
             "Lawyer", "Attorney", "Legal Counsel", "Paralegal",
-            "Corporate Lawyer", "Patent Attorney"
+            "Corporate Lawyer", "Patent Attorney", "Tax Lawyer",
+            "Immigration Lawyer", "Litigation Attorney", "Legal Assistant"
         ],
         "research": [
             "Research Scientist", "Research Engineer", "Research Analyst",
-            "Clinical Researcher", "Market Researcher"
+            "Clinical Researcher", "Market Researcher", "Social Researcher",
+            "Policy Researcher", "Environmental Researcher"
         ],
         "creative": [
             "UX Designer", "Graphic Designer", "Content Writer", "Art Director",
-            "Creative Director", "Visual Designer", "Product Designer"
+            "Creative Director", "Visual Designer", "Product Designer",
+            "UI Designer", "Industrial Designer", "Fashion Designer",
+            "Interior Designer", "Web Designer", "Motion Designer",
+            "3D Artist", "Character Artist", "Environment Artist", "Technical Artist",
+            "Animation Director", "VFX Artist", "Storyboard Artist", "Concept Artist",
+            "Sound Designer", "Music Producer", "Video Editor", "Color Grader",
+            "Creative Technologist", "Experience Designer", "Service Designer",
+            "Brand Strategist", "Creative Copywriter", "Content Marketing Manager"
+        ],
+        "human_resources": [
+            "HR Manager", "Recruiter", "Talent Acquisition Specialist",
+            "HR Business Partner", "Training Specialist", "Compensation Analyst",
+            "Employee Relations Manager", "Benefits Administrator",
+            "People Operations Manager", "Culture Manager", "Diversity & Inclusion Manager",
+            "Employee Experience Manager", "Organizational Development Specialist",
+            "Workforce Planning Manager", "HRIS Analyst", "HR Data Analyst", "HR Analyst",
+            "Total Rewards Manager", "Global Mobility Specialist", "HR Business Intelligence Analyst"
+        ],
+        "service": [
+            "Customer Service Representative", "Flight Attendant", "Hotel Manager",
+            "Restaurant Manager", "Retail Manager", "Event Planner",
+            "Travel Agent", "Hospitality Manager", "Security Guard",
+            "Janitor", "Maintenance Worker", "Security Officer",
+            "Cleaning Crew", "Security Guard", "Security Supervisor",
+            "Security Manager", "Security Director", "Security Consultant"
         ]
     }
 }
