@@ -1,0 +1,65 @@
+{
+    "technical": {
+        "data": [
+            "Data Scientist", "Data Analyst", "Data Engineer", "Machine Learning Engineer", 
+            "AI Engineer", "Business Intelligence Analyst", "Data Architect"
+        ],
+        "software": [
+            "Software Engineer", "Full Stack Developer", "Frontend Developer", 
+            "Backend Developer", "Mobile Developer", "DevOps Engineer", "System Architect",
+            "Cloud Engineer", "Security Engineer", "QA Engineer"
+        ],
+        "engineering": [
+            "Mechanical Engineer", "Electrical Engineer", "Civil Engineer", 
+            "Chemical Engineer", "Industrial Engineer", "Aerospace Engineer",
+            "Biomedical Engineer", "Environmental Engineer"
+        ]
+    },
+    "medical": {
+        "practitioners": [
+            "Doctor", "Surgeon", "Physician", "Psychiatrist", "Dentist",
+            "Emergency Physician", "Family Doctor"
+        ],
+        "nursing": [
+            "Nurse", "Nurse Practitioner", "Clinical Nurse", "Registered Nurse",
+            "ICU Nurse", "Emergency Nurse"
+        ],
+        "specialists": [
+            "Radiologist", "Anesthesiologist", "Cardiologist", "Neurologist",
+            "Oncologist", "Pediatrician", "Dermatologist"
+        ]
+    },
+    "business": {
+        "management": [
+            "Product Manager", "Project Manager", "Program Manager", 
+            "Operations Manager", "Sales Manager", "Marketing Manager",
+            "General Manager", "Business Development Manager"
+        ],
+        "finance": [
+            "Financial Analyst", "Accountant", "Investment Banker", 
+            "Financial Advisor", "Actuary", "Risk Analyst", "Tax Specialist"
+        ],
+        "consulting": [
+            "Business Consultant", "Management Consultant", "Strategy Consultant",
+            "IT Consultant", "Financial Consultant", "HR Consultant"
+        ]
+    },
+    "other": {
+        "education": [
+            "Teacher", "Professor", "Instructor", "Education Consultant",
+            "Academic Researcher", "School Administrator"
+        ],
+        "legal": [
+            "Lawyer", "Attorney", "Legal Counsel", "Paralegal",
+            "Corporate Lawyer", "Patent Attorney"
+        ],
+        "research": [
+            "Research Scientist", "Research Engineer", "Research Analyst",
+            "Clinical Researcher", "Market Researcher"
+        ],
+        "creative": [
+            "UX Designer", "Graphic Designer", "Content Writer", "Art Director",
+            "Creative Director", "Visual Designer", "Product Designer"
+        ]
+    }
+}

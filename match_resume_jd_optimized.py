@@ -7,7 +7,7 @@ import concurrent.futures
 import os
 import hashlib
 import json
-from tqdm import tqdm
+#from tqdm import tqdm  # Unused
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import logging
@@ -23,35 +23,66 @@ logger = logging.getLogger(__name__)
 ###############################################################################
 # GLOBAL PARAMETERS
 ###############################################################################
-ALPHA = 0.3            # Weight of doc-level embedding vs. TF-IDF
-BULLET_WEIGHT = 0.5    # Weight for bullet-based lines
-SECTION_WEIGHT = 0.5   # Weight for section-level alignment
-CLAMP_THRESHOLD = 0.7  # If doc-sim < 0.7 => clamp to 0.0
+ALPHA = 0.3
+BULLET_WEIGHT = 0.5
+SECTION_WEIGHT = 0.5
+CLAMP_THRESHOLD = 0.7
 TOP_N_KEYWORDS = 10
-BATCH_SIZE = 20        # Number of texts to batch for embeddings
-CACHE_DIR = ".cache"   # Directory for caching embeddings
+BATCH_SIZE = 20
+CACHE_DIR = ".cache"
 
 ###############################################################################
-# Caching Utilities
+# (1) Simple Domain Detection (FAST: just string checks)
+###############################################################################
+def determine_domain(text: str) -> str:
+    """
+    Quick domain detection with minimal overhead.
+    Returns one of: 'medical', 'data_science', 'management', or 'unknown'.
+    """
+    domain_keywords = {
+        "medical": {
+            "md", "doctor of medicine", "residency", "surgery", "patient",
+            "neurosurgery", "board certification", "clinical"
+        },
+        "data_science": {
+            "machine learning", "neural network", "data scientist",
+            "predictive model", "random forest", "big data", "etl",
+            "analytics", "ai ", "deep learning", "python", "r ", "sql",
+            "predictive analytics"
+        },
+        "management": {
+            "product manager", "product roadmap", "mrd", "prd",
+            "pricing", "stakeholders", "launch", "business case",
+            "market research", "product vision"
+        }
+    }
+    text_l = text.lower()
+    best_domain = "unknown"
+    best_count = 0
+    for dom, keywords in domain_keywords.items():
+        count = sum(1 for kw in keywords if kw in text_l)
+        if count > best_count:
+            best_domain = dom
+            best_count = count
+    return best_domain
+
+###############################################################################
+# Caching
 ###############################################################################
 def get_cache_key(text: str) -> str:
-    return hashlib.md5(text.encode()).hexdigest()[:16]  # Use shorter hash
+    return hashlib.md5(text.encode()).hexdigest()[:16]
 
-_cache = {}  # Memory cache
+_cache = {}
 
 def get_cached_embedding(text: str, cache_dir: str = CACHE_DIR) -> Optional[List[float]]:
     key = get_cache_key(text)
-    
-    # Check memory cache first
     if key in _cache:
         return _cache[key]
-    
-    # Check disk cache
     cache_file = Path(cache_dir) / f"{key}.json"
     if cache_file.exists():
         try:
             emb = json.loads(cache_file.read_text())
-            _cache[key] = emb  # Store in memory
+            _cache[key] = emb
             return emb
         except:
             return None
@@ -59,22 +90,19 @@ def get_cached_embedding(text: str, cache_dir: str = CACHE_DIR) -> Optional[List
 
 def save_embedding_cache(text: str, embedding: List[float], cache_dir: str = CACHE_DIR) -> None:
     key = get_cache_key(text)
-    _cache[key] = embedding  # Store in memory
-    
-    # Store on disk
+    _cache[key] = embedding
     try:
         Path(cache_dir).mkdir(exist_ok=True)
         cache_file = Path(cache_dir) / f"{key}.json"
-        if not cache_file.exists():  # Only write if doesn't exist
+        if not cache_file.exists():
             cache_file.write_text(json.dumps(embedding))
     except:
-        pass  # Ignore cache write errors
+        pass
 
 ###############################################################################
 # Embedding Utilities
 ###############################################################################
 def embed_text(client: OpenAI, text: str) -> Optional[List[float]]:
-    """Single text embedding with error handling"""
     if not text.strip():
         return None
     try:
@@ -84,78 +112,35 @@ def embed_text(client: OpenAI, text: str) -> Optional[List[float]]:
         print(f"OpenAI API error: {str(e)}")
         return None
 
-def batch_embed_texts(client: OpenAI, texts: List[str], batch_size: int = BATCH_SIZE) -> List[Optional[List[float]]]:
-    """Batch process embeddings with minimal overhead"""
-    embeddings = []
-    valid_texts = [(i, text.strip()) for i, text in enumerate(texts) if text.strip()]
-    if not valid_texts:
-        return []
-    
-    indices, texts_to_process = zip(*valid_texts)
-    
-    # Process in batches without progress bar for small batches
-    for i in range(0, len(texts_to_process), batch_size):
-        batch = texts_to_process[i:i + batch_size]
-        try:
-            resp = client.embeddings.create(
-                model="text-embedding-ada-002",
-                input=batch
-            )
-            batch_embeddings = [data.embedding for data in resp.data]
-            embeddings.extend(batch_embeddings)
-        except Exception as e:
-            logger.warning(f"Error in batch {i}: {e}")
-            embeddings.extend([None] * len(batch))
-    
-    result = [None] * len(texts)
-    for idx, emb in zip(indices, embeddings):
-        result[idx] = emb
-    return result
-
 def batch_embed_all_texts(client: OpenAI, texts: List[str], batch_size: int = BATCH_SIZE) -> Dict[str, List[float]]:
-    """Batch process all texts at once to minimize API calls"""
-    # Create cache key for each text
-    text_to_key = {text: get_cache_key(text) for text in texts if text.strip()}
-    key_to_text = {k: t for t, k in text_to_key.items()}
-    
-    # Check cache first
+    text_to_key = {txt: get_cache_key(txt) for txt in texts if txt.strip()}
     results = {}
     texts_to_embed = []
-    keys_to_embed = []
-    
-    for text, key in text_to_key.items():
-        emb = get_cached_embedding(text)
+    for txt, key in text_to_key.items():
+        emb = get_cached_embedding(txt)
         if emb is not None:
-            results[text] = emb
+            results[txt] = emb
         else:
-            texts_to_embed.append(text)
-            keys_to_embed.append(key)
-    
-    # Batch embed remaining texts
+            texts_to_embed.append(txt)
     if texts_to_embed:
         for i in range(0, len(texts_to_embed), batch_size):
             batch = texts_to_embed[i:i + batch_size]
             try:
-                resp = client.embeddings.create(
-                    model="text-embedding-ada-002",
-                    input=batch
-                )
-                for text, emb_data in zip(batch, resp.data):
+                resp = client.embeddings.create(model="text-embedding-ada-002", input=batch)
+                for t, emb_data in zip(batch, resp.data):
                     emb = emb_data.embedding
-                    results[text] = emb
-                    save_embedding_cache(text, emb)
+                    results[t] = emb
+                    save_embedding_cache(t, emb)
             except Exception as e:
                 logger.warning(f"Error in batch {i}: {e}")
-                for text in batch:
-                    results[text] = None
-    
+                for t in batch:
+                    results[t] = None
     return results
 
 ###############################################################################
-# PDF Processing
+# PDF
 ###############################################################################
 def extract_text_from_pdf(pdf_path: str) -> str:
-    """Extract text from PDF exactly as in original"""
     text_content = []
     try:
         with open(pdf_path, 'rb') as f:
@@ -173,18 +158,10 @@ def extract_text_from_pdf(pdf_path: str) -> str:
 # Section Parsing
 ###############################################################################
 def parse_resume_sections(resume_text: str) -> Dict[str, str]:
-    """
-    Attempt to locate typical resume headings:
-    'Key Skills', 'Skills', 'Education', 'Experience', 'Publications',
-    'Honors', 'Awards', etc.
-    
-    Store them as {section_name -> text}, with 'Misc' for unknown.
-    """
     headings = [
         "skills", "key skills", "experience", "professional experience",
         "education", "publications", "honors", "awards", "certifications"
     ]
-
     lines = resume_text.splitlines()
     lines = [ln.strip() for ln in lines if ln.strip()]
 
@@ -193,14 +170,12 @@ def parse_resume_sections(resume_text: str) -> Dict[str, str]:
     sections[current_section] = []
 
     for line in lines:
-        lower_line = line.lower()
+        low = line.lower()
         matched_heading = None
         for hd in headings:
-            # If 'hd' is found near start of line
-            if hd in lower_line and lower_line.index(hd) < 5:
+            if hd in low and low.index(hd) < 5:
                 matched_heading = hd.title()
                 break
-
         if matched_heading:
             current_section = matched_heading
             if current_section not in sections:
@@ -208,37 +183,29 @@ def parse_resume_sections(resume_text: str) -> Dict[str, str]:
         else:
             sections[current_section].append(line)
 
-    # Convert lists to strings
     for sec in sections:
         sections[sec] = "\n".join(sections[sec]).strip()
-
     return sections
 
 def parse_jd_sections(jd_text: str) -> Dict[str, str]:
-    """
-    Captures typical headings like 'Responsibilities', 'Requirements', 'Preferred', etc.
-    Everything else goes to 'Misc'.
-    """
-    lines = jd_text.splitlines()
-    lines = [ln.strip() for ln in lines if ln.strip()]
-
     known_headings = {
         "responsibilities", "requirements", "preferred", "benefits",
         "how to apply", "job description", "about us", "education", "notes"
     }
+    lines = jd_text.splitlines()
+    lines = [ln.strip() for ln in lines if ln.strip()]
 
     sections = {}
     current_section = "Misc"
     sections[current_section] = []
 
     for line in lines:
-        lower_line = line.lower()
+        low = line.lower()
         matched = None
         for hd in known_headings:
-            if lower_line.startswith(hd):
+            if low.startswith(hd):
                 matched = hd.title()
                 break
-
         if matched:
             current_section = matched
             if current_section not in sections:
@@ -246,53 +213,39 @@ def parse_jd_sections(jd_text: str) -> Dict[str, str]:
         else:
             sections[current_section].append(line)
 
-    # Convert lists to strings
     for sec in sections:
         sections[sec] = "\n".join(sections[sec]).strip()
-
     return sections
 
 ###############################################################################
-# Similarity Calculations
+# Similarity
 ###############################################################################
 def batch_cosine_similarity(embeddings_a: List[List[float]], embeddings_b: List[List[float]]) -> np.ndarray:
-    """Vectorized similarity calculation for multiple embeddings"""
     if not embeddings_a or not embeddings_b:
         return np.array([[0.0]])
-        
-    # Convert to 2D numpy arrays
     A = np.array(embeddings_a)
     B = np.array(embeddings_b)
-    
-    # Ensure 2D
     if len(A.shape) == 1:
         A = A.reshape(1, -1)
     if len(B.shape) == 1:
         B = B.reshape(1, -1)
-    
-    # Compute dot product and norms
     dot_product = np.dot(A, B.T)
     norms_a = np.linalg.norm(A, axis=1)
     norms_b = np.linalg.norm(B, axis=1)
-    
-    # Handle zero norms
     mask = (norms_a[:, np.newaxis] * norms_b) != 0
-    similarities = np.zeros_like(dot_product)
-    similarities[mask] = dot_product[mask] / (norms_a[:, np.newaxis] * norms_b)[mask]
-    
-    return similarities
+    sims = np.zeros_like(dot_product)
+    sims[mask] = dot_product[mask] / (norms_a[:, np.newaxis] * norms_b)[mask]
+    return sims
 
 def cosine_similarity(a: List[float], b: List[float]) -> float:
-    """Single vector cosine similarity"""
     if not a or not b:
         return 0.0
     return float(batch_cosine_similarity([a], [b])[0][0])
 
 ###############################################################################
-# TF-IDF Processing
+# TF-IDF
 ###############################################################################
 def precompute_tfidf(texts: List[str]) -> tuple:
-    """Precompute TF-IDF for multiple texts at once"""
     vec = TfidfVectorizer(stop_words="english", ngram_range=(1,1))
     matrix = vec.fit_transform(texts)
     features = vec.get_feature_names_out()
@@ -308,7 +261,7 @@ def extract_top_keywords_from_text(text: str, top_n: int = TOP_N_KEYWORDS) -> Li
     return [t for t, _s in pairs[:top_n]]
 
 ###############################################################################
-# Requirements Processing
+# Requirements
 ###############################################################################
 HARD_REQ_MARKERS = {
     "required", "must", "mandatory", "doctor", "residency", "board certification",
@@ -316,17 +269,15 @@ HARD_REQ_MARKERS = {
 }
 
 def check_hard_requirements(requirements_text: str, resume_text: str) -> bool:
-    """Exact match with original hard requirements check"""
     req_lower = requirements_text.lower()
     res_lower = resume_text.lower()
-    
     for marker in HARD_REQ_MARKERS:
         if marker in req_lower and marker not in res_lower:
             return False
     return True
 
 ###############################################################################
-# Bullet Processing
+# Bullet
 ###############################################################################
 def parse_bullet_sections_for_jd(jd_text: str) -> tuple:
     sections = parse_jd_sections(jd_text)
@@ -341,7 +292,6 @@ def parse_bullet_sections_for_jd(jd_text: str) -> tuple:
 def average_bullet_similarity(client: OpenAI, lines: List[str], resume_emb: List[float]) -> float:
     if not lines:
         return 1.0
-
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_map = {}
         for line in lines:
@@ -362,18 +312,11 @@ def average_bullet_similarity(client: OpenAI, lines: List[str], resume_emb: List
 ###############################################################################
 # Section Matching
 ###############################################################################
-def match_jd_sections_with_resume(
-    client: OpenAI,
+def match_jd_sections_with_resume(client: OpenAI,
     jd_sections: Dict[str, str],
     resume_sections: Dict[str, str]
 ) -> float:
-    """
-    For each JD section, embed it, then find the best matching resume section by cos sim.
-    Return average of best-match scores across all JD sections.
-    """
-    # Pre-embed resume sections (in parallel for speed)
     resume_embs = {}
-
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_map = {}
         for r_sec_name, r_sec_text in resume_sections.items():
@@ -387,7 +330,6 @@ def match_jd_sections_with_resume(
     sims = []
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_jd = {}
-        # For each JD section, embed in parallel
         for jd_sec_name, jd_sec_text in jd_sections.items():
             future = executor.submit(embed_text, client, jd_sec_text)
             future_jd[future] = jd_sec_name
@@ -397,7 +339,6 @@ def match_jd_sections_with_resume(
             j_name = future_jd[fut]
             jd_embs[j_name] = fut.result()
 
-        # Now compute best match for each JD section
         for jd_sec_name, jd_emb in jd_embs.items():
             if jd_emb is None:
                 continue
@@ -409,10 +350,9 @@ def match_jd_sections_with_resume(
                 if score > best_score:
                     best_score = score
             sims.append(best_score)
-
     if sims:
         return sum(sims)/len(sims)
-    return 1.0  # If no meaningful JD sections, return 1 to not penalize
+    return 1.0
 
 ###############################################################################
 # Score Combination
@@ -422,27 +362,26 @@ def final_score(doc_level: float, bullet_avg: float, section_avg: float) -> floa
     final_val = (doc_bullet ** (1-SECTION_WEIGHT)) * (section_avg ** SECTION_WEIGHT)
     return final_val
 
-###############################################################################
-# Main Function
-###############################################################################
-def is_valid_text(text: str, min_length: int = 100) -> bool:
-    """Check if extracted text is valid and meaningful"""
-    if not text or len(text) < min_length:
-        return False
-    
-    # Check if text contains actual words (not just garbage)
-    words = text.split()
-    if len(words) < 10:  # At least 10 words
-        return False
-    
-    # Check if text contains common resume/job words
-    common_words = {'experience', 'skills', 'education', 'work', 'job', 'the', 'and', 'for'}
-    text_lower = text.lower()
-    if not any(word in text_lower for word in common_words):
-        return False
-    
-    return True
+def keyword_match_score(resume_text: str, jd_keywords: List[str]) -> float:
+    if not jd_keywords:
+        return 0.0
+    r_lower = resume_text.lower()
+    matched = sum(kw.lower() in r_lower for kw in jd_keywords)
+    return matched / len(jd_keywords)
 
+###############################################################################
+# (2) Domain Check (Minimal Overhead)
+###############################################################################
+def domain_check(resume_text: str, jd_text: str) -> bool:
+    resume_dom = determine_domain(resume_text)
+    jd_dom = determine_domain(jd_text)
+    if resume_dom == "unknown" or jd_dom == "unknown":
+        return True  # let them proceed if we can't classify
+    return (resume_dom == jd_dom)
+
+###############################################################################
+# Main
+###############################################################################
 def main():
     if len(sys.argv) != 3:
         print("Usage: python match_resume_jd.py <resume.pdf> <jd.pdf>")
@@ -450,109 +389,104 @@ def main():
 
     resume_pdf = sys.argv[1]
     jd_pdf = sys.argv[2]
-
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    # 1) Extract text
     resume_text = extract_text_from_pdf(resume_pdf)
     jd_text = extract_text_from_pdf(jd_pdf)
 
-    # 2) Parse JD sections
+    # Quick domain check with minimal overhead
+    if not domain_check(resume_text, jd_text):
+        print("\nDomain mismatch => final = 0.0\n")
+        print("Final Combined Score: 0.0000")
+        return
+
     jd_sections = parse_jd_sections(jd_text)
     req_text = jd_sections.get("Requirements", "")
-    
-    # Must-have check
     if not check_hard_requirements(req_text, resume_text):
         print("\nResume fails must-have/hard requirements!")
         print("Final Combined Score: 0.0000")
         return
 
-    # 3) Get all texts that need embeddings
-    texts_to_embed = [resume_text, jd_text]  # Doc-level texts
-    
-    # Add bullet points
+    # Gather texts to embed
+    texts_to_embed = [resume_text, jd_text]
     resp_lines, req_lines = parse_bullet_sections_for_jd(jd_text)
     texts_to_embed.extend(ln for ln in resp_lines if ln.strip())
     texts_to_embed.extend(ln for ln in req_lines if ln.strip())
-    
-    # Add sections
+
     resume_sections = parse_resume_sections(resume_text)
-    texts_to_embed.extend(text for text in resume_sections.values() if text.strip())
-    texts_to_embed.extend(text for text in jd_sections.values() if text.strip())
-    
-    # Batch embed all texts at once
+    jd_vals = parse_jd_sections(jd_text)
+    for val in resume_sections.values():
+        if val.strip():
+            texts_to_embed.append(val)
+    for val in jd_vals.values():
+        if val.strip():
+            texts_to_embed.append(val)
+
+    # Batch
     try:
         embeddings = batch_embed_all_texts(client, texts_to_embed)
     except (APIConnectionError, APIStatusError) as e:
         print(f"OpenAI API error: {str(e)}")
         sys.exit(1)
-    
-    # Get doc-level embeddings
+
+    # Doc-level
     r_emb = embeddings[resume_text]
     j_emb = embeddings[jd_text]
-    
-    # Calculate doc similarity
     doc_sim = cosine_similarity(r_emb, j_emb)
     if CLAMP_THRESHOLD and doc_sim < CLAMP_THRESHOLD:
         doc_sim = 0.0
 
-    # 4) TF-IDF
+    # TF-IDF
     jd_keywords = extract_top_keywords_from_text(jd_text, TOP_N_KEYWORDS)
     tfidf_sc = keyword_match_score(resume_text, jd_keywords)
+    doc_level = ALPHA * doc_sim + (1 - ALPHA) * tfidf_sc
 
-    doc_level = ALPHA*doc_sim + (1-ALPHA)*tfidf_sc
-
-    # 5) Calculate bullet similarities using cached embeddings
+    # Bullet
     bullet_sims_resp = []
     for line in resp_lines:
         if line.strip() and line in embeddings and embeddings[line] is not None:
             sim = cosine_similarity(embeddings[line], r_emb)
             bullet_sims_resp.append(sim)
-    
     bullet_sims_req = []
     for line in req_lines:
         if line.strip() and line in embeddings and embeddings[line] is not None:
             sim = cosine_similarity(embeddings[line], r_emb)
             bullet_sims_req.append(sim)
-    
     bullet_sc_resp = sum(bullet_sims_resp)/len(bullet_sims_resp) if bullet_sims_resp else 0.0
     bullet_sc_req = sum(bullet_sims_req)/len(bullet_sims_req) if bullet_sims_req else 0.0
     bullet_avg = (bullet_sc_resp + bullet_sc_req)/2.0
 
-    # 6) Calculate section similarities using cached embeddings
+    # Section-level
     section_sims = []
-    for jd_sec_name, jd_sec_text in jd_sections.items():
+    for jd_sec_text in jd_vals.values():
         if not jd_sec_text.strip() or jd_sec_text not in embeddings:
             continue
         jd_emb = embeddings[jd_sec_text]
         if jd_emb is None:
             continue
-            
         best_score = 0.0
         for r_sec_text in resume_sections.values():
             if not r_sec_text.strip() or r_sec_text not in embeddings:
                 continue
-            r_emb = embeddings[r_sec_text]
-            if r_emb is None:
+            r_semb = embeddings[r_sec_text]
+            if r_semb is None:
                 continue
-            score = cosine_similarity(jd_emb, r_emb)
+            score = cosine_similarity(jd_emb, r_semb)
             if score > best_score:
                 best_score = score
         section_sims.append(best_score)
-    
     section_avg = sum(section_sims)/len(section_sims) if section_sims else 1.0
 
-    # 7) final
+    # Final
     final_val = final_score(doc_level, bullet_avg, section_avg)
 
-    # Print results
     print("\n=== SECTION-LEVEL PARSING RESULTS ===")
     print("Resume Sections Found:")
     for k,v in resume_sections.items():
         print(f"  [{k}] => {len(v)} chars")
 
     print("\nJD Sections Found:")
-    for k,v in jd_sections.items():
+    for k,v in jd_vals.items():
         print(f"  [{k}] => {len(v)} chars")
 
     print("\n=== MATCH RESULTS ===")
@@ -564,13 +498,5 @@ def main():
     print(f"Section-level alignment:       {section_avg:.4f}")
     print(f"Final Combined Score:          {final_val:.4f}")
 
-def keyword_match_score(resume_text: str, jd_keywords: List[str]) -> float:
-    """Calculate keyword match score between resume and job description keywords"""
-    if not jd_keywords:
-        return 0.0
-    r_lower = resume_text.lower()
-    matched = sum(kw.lower() in r_lower for kw in jd_keywords)
-    return matched / len(jd_keywords)
-
 if __name__ == "__main__":
-    main() 
+    main()
