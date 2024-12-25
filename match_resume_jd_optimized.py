@@ -425,28 +425,23 @@ class ResumeJDMatcher:
         if resume_path == jd_path:
             return True, "Same document", 1.0
             
-        # Extract minimal text needed
-        resume_preview = self.extract_text(resume_path, max_chars=1000)
-        jd_preview = self.extract_text(jd_path, max_chars=1000)
-
-        # Get classifications
-        resume_class = self.classifier.classify_document(resume_preview[:2500])
-        jd_class = self.classifier.classify_document(jd_preview[:2500])
+        # Get classifications (using cache)
+        resume_class = self.classifier.process_file(resume_path)
+        jd_class = self.classifier.process_file(jd_path)
+        
+        # Add debug logging
+        logger.debug(f"Resume classification: {resume_class}")
+        logger.debug(f"JD classification: {jd_class}")
         
         # Calculate similarity score based on title and field
         title_match = resume_class['title'] == jd_class['title']
         field_match = resume_class['field'] == jd_class['field']
         
-        # Scoring logic:
-        # - Same title and field: 1.0
-        # - Different title but same field: 0.6
-        # - Different field: 0.0
         compatibility_score = 1.0 if title_match else 0.6 if field_match else 0.0
         
         reason = (f"Resume: {resume_class['title']} ({resume_class['field']}), "
                  f"JD: {jd_class['title']} ({jd_class['field']})")
         
-        # Allow proceeding if there's any match (title or field)
         return (title_match or field_match), reason, compatibility_score
 
     def get_cached_title(self, text: str) -> Optional[str]:
@@ -519,9 +514,21 @@ def main():
     parser.add_argument(
         "--model", 
         default="gpt-4o",
-        help="Model for job classification (default: gpt-4o)"
+        help="Model for job classification"
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable debug logging"
     )
     args = parser.parse_args()
+
+    # Set logging level based on debug flag
+    if args.debug:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logger.debug("Debug logging enabled")
+    else:
+        logging.getLogger().setLevel(logging.WARNING)
 
     matcher = ResumeJDMatcher(model=args.model)
 

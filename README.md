@@ -82,6 +82,18 @@ export GEMINI_API_KEY="your-key-here"  # For Google models
 # Ensure your virtual environment is activated
 source venv/bin/activate  # or conda activate talentalign
 
+### Logging Control
+```bash
+# Run with default logging (WARNING level)
+python match_resume_jd_optimized.py resume.pdf jd.pdf
+
+# Run with debug logging
+TALENTALIGN_LOG_LEVEL=DEBUG python match_resume_jd_optimized.py resume.pdf jd.pdf
+
+# Run silently (errors only)
+TALENTALIGN_LOG_LEVEL=ERROR python match_resume_jd_optimized.py resume.pdf jd.pdf
+```
+
 ### Basic Matching
 
 ```bash

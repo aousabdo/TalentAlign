@@ -11,8 +11,20 @@ import concurrent.futures
 import logging
 import warnings
 from absl import logging as absl_logging
+from pathlib import Path
+import hashlib
+import tempfile
 
-# Suppress the gRPC and abseil warnings
+# Configure logging with environment variable control
+log_level = os.getenv('TALENTALIGN_LOG_LEVEL', 'WARNING')
+logging.basicConfig(
+    level=getattr(logging, log_level),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Suppress other loggers by default
+logging.getLogger('httpx').setLevel(logging.WARNING)
 warnings.filterwarnings('ignore', category=UserWarning)
 absl_logging.set_verbosity(absl_logging.ERROR)
 logging.getLogger('googleapiclient').setLevel(logging.ERROR)
@@ -29,6 +41,11 @@ class DocumentClassifier:
 
         # A small cache to store text from PDFs so we don't re-parse
         self.text_cache: Dict[str, str] = {}
+
+        # Setup cache directory in current working directory
+        self.cache_dir = Path(".cache/classifications")
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        logger.debug(f"Cache directory: {self.cache_dir}")
 
         # Initialize Gemini if needed
         if self.model.startswith('gemini-'):
@@ -218,11 +235,75 @@ Choose only from the provided lists. No explanations or additional text."""
                 "field": f"Error in classification: {str(e)}"
             }
 
+    def _get_file_hash(self, file_path: str) -> str:
+        """Generate a stable hash for a file."""
+        try:
+            with open(file_path, 'rb') as f:
+                # Only hash first 8KB for speed
+                return hashlib.md5(f.read(8192)).hexdigest()
+        except Exception as e:
+            logger.warning(f"Error hashing file {file_path}: {e}")
+            return None
+
+    def _get_cached_classification(self, file_path: str) -> Optional[Dict]:
+        """Retrieve cached classification if it exists."""
+        file_hash = self._get_file_hash(file_path)
+        if not file_hash:
+            return None
+            
+        cache_file = self.cache_dir / f"{file_hash}_{self.model}.json"
+        if cache_file.exists():
+            try:
+                return json.loads(cache_file.read_text())
+            except Exception as e:
+                logger.warning(f"Error reading cache: {e}")
+                return None
+        return None
+
+    def _save_classification(self, file_path: str, result: Dict) -> None:
+        """Save classification result to cache."""
+        try:
+            file_hash = self._get_file_hash(file_path)
+            if not file_hash:
+                logger.debug("No file hash generated")
+                return
+            
+            # Ensure cache directory exists
+            os.makedirs(self.cache_dir, exist_ok=True)
+            
+            cache_file = self.cache_dir / f"{file_hash}_{self.model}.json"
+            with open(cache_file, 'w') as f:
+                json.dump(result, f)
+            
+            logger.debug(f"Successfully cached {os.path.basename(file_path)} -> {cache_file}")
+            
+            # Verify cache file was created
+            if not cache_file.exists():
+                logger.debug(f"Cache file not created: {cache_file}")
+            else:
+                logger.debug(f"Verified cache file exists: {cache_file}")
+            
+        except Exception as e:
+            logger.debug(f"Cache error for {file_path}: {str(e)}")
+            logger.debug(f"Cache directory: {self.cache_dir}")
+            logger.debug(f"Current working directory: {os.getcwd()}")
+
     def process_file(self, file_path: str) -> Dict[str, str]:
-        """
-        Process a single file: extract text if PDF, then classify.
-        Returns a dictionary with "title" and "field".
-        """
+        """Process a single file with caching."""
+        # Check cache first
+        cached = self._get_cached_classification(file_path)
+        if cached:
+            return cached
+
+        # Existing classification logic
+        result = self._process_file_internal(file_path)
+        
+        # Cache the result
+        self._save_classification(file_path, result)
+        return result
+
+    def _process_file_internal(self, file_path: str) -> Dict[str, str]:
+        """Internal method containing existing classification logic."""
         if not os.path.exists(file_path):
             return {"title": "Error: File not found", "field": "Error: File not found"}
         
@@ -270,22 +351,33 @@ def main():
     parser.add_argument(
         "--model",
         default="gpt-4o",
-        help="Model to use for classification. Options: [llama3.2, phi3] (Ollama) or gpt-4o (OpenAI) or gemini-2.0-flash-exp (Google)"
+        help="Model for job classification"
     )
     parser.add_argument(
-        "--api-key",
-        help="OpenAI/Gemini API key (required for those models)",
-        default=os.getenv("OPENAI_API_KEY") or os.getenv("GEMINI_API_KEY")
+        "--debug",
+        action="store_true",
+        help="Enable debug logging"
     )
     args = parser.parse_args()
 
+    # Set logging level based on debug flag
+    if args.debug:
+        logging.getLogger().setLevel(logging.DEBUG)
+        logger.debug("Debug logging enabled")
+    else:
+        logging.getLogger().setLevel(logging.WARNING)
+
+    # Get API key from environment
+    api_key = os.getenv("OPENAI_API_KEY") if args.model.startswith(('gpt-', 'text-')) else os.getenv("GEMINI_API_KEY")
+    
     # Validate API keys if needed
-    if args.model.startswith(('gpt-', 'text-')) and not args.api_key:
-        raise ValueError("OpenAI API key required for OpenAI models")
-    elif args.model.startswith(('gpt-', 'o1')):
-        openai.api_key = args.api_key
-    elif args.model.startswith('gemini-') and not args.api_key:
-        raise ValueError("Gemini API key required for Google models")
+    if args.model.startswith(('gpt-', 'text-')):
+        if not api_key:
+            raise ValueError("OpenAI API key required for OpenAI models")
+        openai.api_key = api_key
+    elif args.model.startswith('gemini-'):
+        if not api_key:
+            raise ValueError("Gemini API key required for Google models")
 
     classifier = DocumentClassifier(model=args.model)
     
