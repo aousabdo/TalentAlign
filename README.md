@@ -5,8 +5,8 @@ TalentAlign is a sophisticated document matching system that uses advanced NLP a
 ## 🚀 Key Features
 
 - **Multi-Model AI Support**
-  - OpenAI GPT-4 Optimized (gpt-4o)
-  - Google Gemini Pro
+  - OpenAI Models (gpt-4o, etc.)
+  - Google Gemini 2.0 Flash Exp
   - Local Models (via Ollama):
     - Llama 3.2
     - Phi-3
@@ -33,22 +33,54 @@ TalentAlign is a sophisticated document matching system that uses advanced NLP a
   - Concurrent Execution
   - Memory-efficient Text Processing
 
-## 🛠 Installation
+## 🛠 Installation & 🛠 Environment Setup
 
 ```bash
 git clone https://github.com/aousabdo/TalentAlign.git
 cd TalentAlign
+
+```
+
+### Using venv (recommended)
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+## On Windows
+venv\Scripts\activate
+## On macOS/Linux
+source venv/bin/activate
+
+# Install dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+### Using conda
+```bash
+# Create conda environment
+conda create -n talentalign python=3.9
+conda activate talentalign
+pip install -r requirements.txt
+```
+
 
 ## 🔑 API Keys Setup
 
 ```bash
-export OPENAI_API_KEY="your-key-here"  # For GPT-4 models
+# Add these to your .env file or export in your shell
+export OPENAI_API_KEY="your-key-here"  # For OpenAI models
 export GEMINI_API_KEY="your-key-here"  # For Google models
+
+# For local models, install Ollama
+# Visit: https://ollama.ai/download
 ```
 
 ## 💻 Usage
+
+# Ensure your virtual environment is activated
+source venv/bin/activate  # or conda activate talentalign
 
 ### Basic Matching
 
@@ -133,10 +165,17 @@ Final Combined Score:        0.8390
 
 - Python 3.8+
 - PDF documents only
-- Required packages in `requirements.txt`
+- Required packages (see requirements.txt):
+  - OpenAI API client (>=1.0.0)
+  - Google Generative AI
+  - PyMuPDF (fitz)
+  - scikit-learn
+  - numpy
+  - Other utilities (see requirements.txt)
 - OpenAI API key for GPT models
 - Google API key for Gemini models
-- Ollama for local models
+- Ollama installed for local models
+  - Download from: https://ollama.ai/download
 
 ## 🤝 Contributing
 
