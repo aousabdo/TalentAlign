@@ -1,54 +1,159 @@
-# TalentAlign
+# TalentAlign: Advanced Resume-Job Description Matching System
 
-An intelligent resume matching system that helps HR professionals find the best candidates for their job openings. TalentAlign uses advanced NLP and machine learning techniques to analyze resumes and job descriptions, providing accurate matching scores based on multiple factors.
+TalentAlign is a sophisticated document matching system that uses advanced NLP and multiple AI models to intelligently match resumes with job descriptions. It employs a multi-layered analysis approach combining semantic understanding, domain expertise, and skill alignment.
 
-## Features
+## 🚀 Key Features
 
-- Advanced document similarity analysis using OpenAI embeddings
-- Section-level resume and job description parsing
-- Bullet-point based matching
-- TF-IDF keyword analysis
-- Hard requirements verification
-- Weighted scoring system
+- **Multi-Model AI Support**
+  - OpenAI GPT-4 Optimized (gpt-4o)
+  - Google Gemini Pro
+  - Local Models (via Ollama):
+    - Llama 3.2
+    - Phi-3
+    - Mistral
+  - Flexible architecture for easy model addition
 
-## Technical Stack
+- **Intelligent Classification**
+  - Job Title Recognition
+  - Field/Industry Detection
+  - Domain Expertise Mapping
+  - Cross-domain Skill Transfer Analysis
 
-- Python 3.x
-- OpenAI API
-- scikit-learn
-- PyPDF2
-- NumPy
+- **Advanced Matching Algorithm**
+  - Document-level Semantic Similarity
+  - Section-wise Alignment
+  - Bullet Point Analysis
+  - TF-IDF Keyword Matching
+  - Field-aware Scoring
+  - Title Family Recognition
 
-## Setup
+- **Performance Optimizations**
+  - Smart Caching System
+  - Batch Processing
+  - Concurrent Execution
+  - Memory-efficient Text Processing
 
-1. Clone the repository
-2. Install dependencies:
+## 🛠 Installation
+
 ```bash
-pip install openai scikit-learn PyPDF2 numpy
-```
-3. Set your OpenAI API key:
-```bash
-export OPENAI_API_KEY='your-api-key'
+git clone https://github.com/aousabdo/TalentAlign.git
+cd TalentAlign
+pip install -r requirements.txt
 ```
 
-## Usage
+## 🔑 API Keys Setup
 
 ```bash
-python match_resume_jd.py <resume.pdf> <job_description.pdf>
+export OPENAI_API_KEY="your-key-here"  # For GPT-4 models
+export GEMINI_API_KEY="your-key-here"  # For Google models
 ```
 
-## Coming Soon
+## 💻 Usage
 
-- Web interface for HR professionals
-- Batch processing of multiple resumes
-- Candidate ranking system
-- Resume and JD management dashboard
-- Export and reporting features
+### Basic Matching
 
-## License
+```bash
+python match_resume_jd_optimized.py path/to/resume.pdf path/to/job_description.pdf
+```
 
-MIT License
+### Model Selection
+```bash
+# Using OpenAI GPT-4
+python match_resume_jd_optimized.py resume.pdf jd.pdf --model gpt-4o
 
-## Contributing
+# Using Google Gemini
+python match_resume_jd_optimized.py resume.pdf jd.pdf --model gemini-2.0-flash-exp
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. 
+# Using Local Models
+python match_resume_jd_optimized.py resume.pdf jd.pdf --model llama3.2
+```
+
+### Document Classification
+```bash
+python document_classifier.py path/to/document.pdf --model gpt-4o
+```
+
+## 🎯 Matching Algorithm
+
+The system uses a sophisticated multi-layer matching approach:
+
+1. **Quick Compatibility Check**
+   - Job Title Analysis
+   - Field/Industry Alignment
+   - Domain Expertise Verification
+
+2. **Deep Content Analysis**
+   - Document Embedding Similarity
+   - Section-level Alignment
+   - Requirement-Experience Matching
+   - Keyword Density Analysis
+
+3. **Smart Scoring System**
+   - Title Match: 100% weight
+   - Field Match: 60% weight
+   - Cross-domain Skills: Partial scoring
+   - Section Alignment: Weighted contribution
+
+## 📊 Output Example
+
+```
+=== SECTION-LEVEL PARSING RESULTS ===
+Resume Sections Found:
+  [Skills] => 1303 chars
+  [Education] => 1458 chars
+  [Professional Experience] => 18142 chars
+  [Publications] => 659 chars
+  [Honors] => 540 chars
+
+JD Sections Found:
+  [Misc] => 1250 chars
+  [Responsibilities] => 745 chars
+  [Requirements] => 586 chars
+
+=== MATCH RESULTS ===
+Document Embedding Similarity: 0.7931
+TF-IDF Keyword Score:         0.9000
+Bullet (Resp) Score:          0.7519
+Bullet (Req) Score:          0.7634
+Bullet Average:              0.7576
+Section-level alignment:     0.8680
+Final Combined Score:        0.8390
+```
+
+## 🔄 Recent Updates
+
+- Added field-aware matching for cross-domain compatibility
+- Implemented job title family recognition (tech, data, product roles)
+- Integrated Google Gemini support
+- Enhanced caching system for embeddings and classifications
+- Improved domain detection with weighted phrase matching
+- Added support for multiple local models via Ollama
+
+## 📝 Requirements
+
+- Python 3.8+
+- PDF documents only
+- Required packages in `requirements.txt`
+- OpenAI API key for GPT models
+- Google API key for Gemini models
+- Ollama for local models
+
+## 🤝 Contributing
+
+Contributions welcome! Please read our contributing guidelines and submit PRs.
+
+## 📄 License
+
+MIT License - see LICENSE file for details
+
+## 📚 Project Structure
+
+```
+TalentAlign/
+├── document_classifier.py      # Job title & field classification
+├── match_resume_jd_optimized.py # Main matching algorithm
+├── benchmark_models.py         # Model performance testing
+├── job_categories.json        # Job title taxonomy
+├── requirements.txt           # Package dependencies
+└── process_documents.sh       # Batch processing script
+```
