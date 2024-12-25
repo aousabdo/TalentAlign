@@ -270,7 +270,7 @@ def main():
     parser.add_argument(
         "--model",
         default="gpt-4o",
-        help="Model to use for classification. Options: llama3.2, mistral, phi (Ollama) or gpt-4o (OpenAI) or gemini-pro (Google)"
+        help="Model to use for classification. Options: [llama3.2, phi3] (Ollama) or gpt-4o (OpenAI) or gemini-2.0-flash-exp (Google)"
     )
     parser.add_argument(
         "--api-key",
@@ -282,7 +282,7 @@ def main():
     # Validate API keys if needed
     if args.model.startswith(('gpt-', 'text-')) and not args.api_key:
         raise ValueError("OpenAI API key required for OpenAI models")
-    elif args.model.startswith(('gpt-', 'text-')):
+    elif args.model.startswith(('gpt-', 'o1')):
         openai.api_key = args.api_key
     elif args.model.startswith('gemini-') and not args.api_key:
         raise ValueError("Gemini API key required for Google models")

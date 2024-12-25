@@ -1,0 +1,526 @@
+    2  python fourier_vis.py 
+    3  python fourier_vis.py 
+    4  python fourier_vis.py 
+    5  python fourier_vis.py 
+    6  python fourier_vis.py 
+    8  python fourier_vis.py 
+   10  python fourier_vis.py 
+   13  python fourier_vis.py 
+   63  python ppt_agent_wf.py 
+   66  python ppt_agent_wf.py 
+   69  python ppt_agent_wf.py 
+   72  python ppt_agent_wf.py 
+   80  python ppt_agent_wf.py 
+   84  mkdir python-course
+   85  cd python
+   87  cd python-course/
+  149  python titanic.py 
+  150  python titanic.py 
+  151  clear; python titanic.py 
+  153  python
+  154  clear; python titanic.py 
+  155  clear; python titanic.py 
+  156  clear; python titanic.py 
+  158  clear; python titanic.py 
+  159  clear; python titanic.py 
+  160  clear; python titanic.py 
+  161  clear; python titanic.py 
+  162  clear; python titanic.py 
+  163  clear; python titanic.py 
+  164  clear; python titanic.py 
+  185  python -m pip install -U aider-chat
+  205  python coinmarketcap.py 
+  207  python coinmarketcap.py 
+  208  python coinmarketcap.py 
+  209  python coinmarketcap.py 
+  210  python coinmarketcap.py 
+  212  python coinmarketcap.py 
+  249  python run_backtest.py 
+  251  python run_backtest.py 
+  254  python run_backtest.py 
+  255  clear; python run_backtest.py 
+  256  clear; python run_backtest.py 
+  257  clear; python run_backtest.py 
+  258  clear; python run_backtest.py 
+  259  clear; python run_backtest.py 
+  260  clear; python run_backtest.py 
+  264  python generate_report.py 
+  267  clear; python run_backtest.py 
+  268  python generate_report.py 
+  269  clear; python run_backtest.py 
+  270  python generate_report.py 
+  271  clear; python run_backtest.py 
+  272  clear; python generate_report.py 
+  273  clear; python generate_report.py 
+  275  clear; python generate_report.py 
+  276  clear; python generate_report.py 
+  277  clear; python generate_report.py 
+  278  clear; python generate_report.py 
+  279  clear; python generate_report.py 
+  280  clear; python generate_report.py 
+  281  clear; python generate_report.py 
+  282  clear; python generate_report.py 
+  283  clear; python generate_report.py 
+  284  clear; python run_backtest.py 
+  285  clear; python generate_report.py 
+  286  clear; python generate_report.py 
+  287  clear; python generate_report.py 
+  288  clear; python generate_report.py 
+  289  clear; python generate_report.py 
+  290  clear; python generate_report.py 
+  291  clear; python generate_report.py 
+  292  clear; python generate_report.py 
+  293  clear; python generate_report.py 
+  294  clear; python run_backtest.py 
+  295  clear; python generate_report.py 
+  296  clear; python generate_report.py 
+  297  clear; python generate_report.py 
+  298  clear; python generate_report.py 
+  299  clear; python generate_report.py 
+  300  clear; python generate_report.py 
+  301  clear; python generate_report.py 
+  302  clear; python generate_report.py 
+  303  clear; python generate_report.py 
+  304  clear; python run_backtest.py 
+  306  python run_backtest.py 
+  308  python run_backtest.py 
+  310  python run_backtest.py 
+  311  clear; python generate_report.py 
+  312  clear; python generate_report.py 
+  313  clear; python generate_report.py 
+  367  python contribute.py --repository=git@https://github.com/aousabdo/repo 
+  369  python contribute.py --repository=git@https://github.com/aousabdo/repo 
+  371  python contribute.py --repository=git@github.com/aousabdo/repo 
+  372  python contribute.py --repository=git@github.com/aousabdo/repo.git 
+  373  python contribute.py --repository=git@github.com:aousabdo/repo.git
+  376  python contribute.py --repository=git@github.com:aousabdo/repo.git
+  377  python contribute.py --max_commits=22 --frequency=95 --repository=git@github.com:aousabdo/repo.git
+  379  python contribute.py --max_commits=22 --frequency=96 --repository=git@github.com:aousabdo/repo.git
+  380  python contribute.py --max_commits=22 --frequency=96 --repository=git@github.com:aousabdo/repo2.git
+  487  /opt/homebrew/bin/python3 /Users/aousabdo/.cursor/extensions/ms-python.python-2024.12.3-darwin-arm64/python_files/printEnvVariablesToFile.py /Users/aousabdo/.cursor/extensions/ms-python.python-2024.12.3-darwin-arm64/python_files/deactivate/bash/envVars.txt
+  540  python -m venv venv
+  544  python -m pip install --upgrade pip
+  546  python -m venv venv
+  549  python -m venv venv
+  551  python -m pip install --upgrade pip
+  565  python run_first.py 
+  569  python -c "import nltk; nltk.download('punkt')"
+  571  python -c "import nltk; nltk.download('punkt_tab')"
+  588  python run_first.py
+  592  python run_first.py
+  600  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  602  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  603  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  605  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  607  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  609  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  610  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  611  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  612  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  613  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  614  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  615  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  616  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  617  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  618  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  619  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  620  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  621  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  622  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_front_end_engineer.pdf 
+  623  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  624  python match_resume_jd.py Resume-Matcher/Data/Resumes/barry_allen_fe.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  626  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  627  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  628  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  630  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  631  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  632  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  633  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  634  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  635  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  636  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  637  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  638  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  639  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  640  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  641  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_full_stack_engineer.pdf
+  642  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_java_developer.pdf
+  643  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  644  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  645  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  646  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_full_stack_engineer.pdf
+  647  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_java_developer.pdf
+  648  clear; python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/brain\ surgeon.pdf 
+  649  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/data\ scientist\ jd.pdf 
+  650  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_product_manager.pdf
+  651  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_full_stack_engineer.pdf
+  652  python match_resume_jd.py Resume-Matcher/Data/Resumes/A_Abdo_Resume_July_2024.pdf  Resume-Matcher/Data/JobDescription/job_desc_java_developer.pdf
+  671  python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  672  python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf 
+  675  python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf time python match_resume_jd.py test_resume.pdf test_jd.pdf
+  676  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  677  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  679  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  680  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  682  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  683  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  685  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  686  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  688  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  689  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  690  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  691  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  693  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  694  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  695  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  696  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  700  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  701  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  702  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  703  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  704  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  706  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  707  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  708  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  709  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  710  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  712  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  713  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  714  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  716  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  717  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  718  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  720  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  721  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  722  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  724  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  725  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  726  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  727  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  728  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf 
+  729  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  730  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  732  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  733  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  734  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  735  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf 
+  736  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  738  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  739  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  740  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf 
+  741  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  742  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  743  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  747  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  748  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  750  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  752  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  754  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  756  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  758  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  760  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  762  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  764  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  766  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  768  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  770  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  771  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  772  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  773  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  774  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  775  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  782  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  783  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  784  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  785  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  786  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_data_scientist.pdf 
+  787  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  788  time python match_resume_jd_optimized.py Data/Resumes/barry_allen_fe.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  789  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  790  time python match_resume_jd.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  792  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  794  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  795  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  796  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  798  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  800  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  801  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  802  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  803  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  804  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  805  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  806  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_data_scientist.pdf 
+  807  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  808  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  810  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  811  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  812  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  813  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  814  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  816  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  818  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  820  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  822  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  823  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  824  time python match_resume_jd.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  826  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  827  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  828  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  829  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  831  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  832  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  833  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  834  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+  835  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  836  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  837  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  838  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  859  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  860  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf 
+  861  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf 
+  862  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  863  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+  910  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  912  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  913  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  914  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  915  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  916  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  917  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  918  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  919  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  920  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  921  python document_classifier.py Data/Resumes/john_doe.pdf 
+  923  python document_classifier.py Data/Resumes/john_doe.pdf 
+  924  python document_classifier.py Data/Resumes/john_doe.pdf 
+  925  python document_classifier.py Data/Resumes/john_doe.pdf 
+  926  time python document_classifier.py Data/Resumes/john_doe.pdf 
+  927  time python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf 
+  928  time python document_classifier.py Data/JobDescription/job_desc_front_end_engineer.pdf 
+  929  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  931  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  932  time python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf 
+  933  python document_classifier.py Data/Resumes/john_doe.pdf 
+  934  time python document_classifier.py Data/JobDescription/job_desc_front_end_engineer.pdf 
+  935  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  936  python document_classifier.py Data/Resumes/bruce_wayne_fullstack.pdf 
+  937  python document_classifier.py Data/Resumes/harvey_dent_mle.pdf 
+  938  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  939  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  940  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  941  time python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  942  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  943  time python document_classifier.py Data/Resumes/bruce_wayne_fullstack.pdf 
+  944  time python document_classifier.py Data/Resumes/harvey_dent_mle.pdf 
+  945  time python document_classifier.py Data/Resumes/barry_allen_fe.pdf 
+  946  time python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+  947  time python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf 
+  948  time python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf 
+  949  time python document_classifier.py Data/JobDescription/job_desc_front_end_engineer.pdf 
+  950  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf 
+  951  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi3
+  952  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi
+  953  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2
+  955  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2
+  956  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi
+  957  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi3
+  959  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi3
+  960  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2
+  961  python benchmark_models.py Data/JobDescription/job_desc_full_stack_engineer.pdf --iterations 30
+  963  python benchmark_models.py Data/JobDescription/job_desc_full_stack_engineer.pdf --iterations 30
+  966  python benchmark_models.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --iterations 30
+  969  python benchmark_models.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --iterations 100
+  971  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2
+  972  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  973  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+  974  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=llama3.2
+  975  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=llama3.2
+  976  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=llama3.2
+  977  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=llama3.2
+  978  time python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=llama3.2
+ 1011  process_files() {     local dir=$1;     local model=$2;     for file in "$dir"/*; do         if [[ -f "$file" ]]; then             echo "Processing: $file";             time python document_classifier.py "$file" --model="$model";         fi;     done; }
+ 1022  process_files() {     local dir=$1;     local model=$2;     for file in "$dir"/*; do         if [[ -f "$file" ]]; then             echo "Processing: $file";             time python document_classifier.py "$file" --model="$model";         fi;     done; }
+ 1050  python document_classifier.py Data/kaggle/data/data/HR/10399912.pdf 
+ 1052  python document_classifier.py Data/kaggle/data/data/HR/10399912.pdf 
+ 1053  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+ 1054  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+ 1055  python document_classifier.py Data/Resumes/harvey_dent_mle.pdf 
+ 1056  python document_classifier.py Data/kaggle/data/data/ACCOUNTANT/10554236.pdf 
+ 1057  python document_classifier.py Data/kaggle/data/data/ACCOUNTANT/20393721.pdf 
+ 1058  python document_classifier.py Data/kaggle/data/data/HR/73077810.pdf 
+ 1059  python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf 
+ 1062  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf 
+ 1064  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf 
+ 1065  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf 
+ 1066  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model="llama3.2
+ 1067  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=llama3.2
+ 1068  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=llama3.2
+ 1069  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=GPT-4o
+ 1070  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=GPT4
+ 1071  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=GPT-4
+ 1074  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=GPT-4
+ 1075  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=GPT-4o
+ 1076  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=gpt-4o
+ 1077  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=gpt-4
+ 1078  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=gpt-4o
+ 1080  python document_classifier.py Data/kaggle/data/data/HR/49937469.pdf  --model=gpt-4o
+ 1081  python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf 
+ 1082  python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1084  python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o
+ 1085  python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=phi3
+ 1086  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o
+ 1087  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=phi3
+ 1088  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1089  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o
+ 1090  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1091  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1092  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1093  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1094  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1095  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1096  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1097  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1098  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=phi3
+ 1099  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=phi3
+ 1100  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=phi3
+ 1101  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1102  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1103  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1104  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=gpt-4o-mini
+ 1105  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o-mini
+ 1107  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1108  time python document_classifier.py Data/kaggle/data/data/HR/93002334.pdf --model=llama3.2
+ 1109  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1111  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=llama3.2
+ 1114  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=llama3.2
+ 1115  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o-mini
+ 1116  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1119  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1121  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1128  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1133  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1134  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1135  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1136  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1137  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1140  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1141  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1142  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1143  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1144  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1145  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1146  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gpt-4o
+ 1147  time python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gpt-4o
+ 1148  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gpt-4o
+ 1149  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=phi3
+ 1150  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=ollama3.2:3b
+ 1151  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=ollama3.2
+ 1152  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=ollama3.2
+ 1153  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=ollama3.2
+ 1154  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2
+ 1155  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:3b
+ 1156  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:3b
+ 1157  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:3b
+ 1171  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:3b
+ 1172  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gpt-4o
+ 1173  time python document_classifier.py Data/kaggle/data/data/HR/23914451.pdf --model=gemini-2.0-flash-exp
+ 1174  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gemini-2.0-flash-exp
+ 1175  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gpt-4o
+ 1176  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.1
+ 1177  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:1b
+ 1178  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=llama3.2:3b
+ 1179  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=mistral-nemo
+ 1180  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=o1
+ 1181  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=o1-mini
+ 1182  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=mistral-nemo
+ 1183  time python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gpt-4o
+ 1184  time python document_classifier.py Data/JobDescription/job_desc_front_end_engineer.pdf --model=gpt-4o
+ 1185  time python document_classifier.py Data/JobDescription/job_desc_data_scientist.pdf --model=gpt-4o
+ 1186  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf model=gpt-4o
+ 1187  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf model gpt-4o
+ 1188  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+ 1189  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+ 1191  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf
+ 1192  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf 
+ 1193  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o
+ 1194  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o
+ 1195  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf --model gpt-4o
+ 1196  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model phi3
+ 1197  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o-mini
+ 1198  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o
+ 1199  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1200  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1201  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1202  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1204  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1205  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1206  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1207  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1208  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1209  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o
+ 1210  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o-mini
+ 1211  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o-mini
+ 1212  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o-mini
+ 1213  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf --model gpt-4o-mini
+ 1215  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf --model gpt-4o-mini
+ 1216  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o-mini
+ 1217  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_brain_surgeon.pdf --model gpt-4o-mini
+ 1218  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o-mini
+ 1219  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf --model gpt-4o-mini
+ 1220  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o-mini
+ 1221  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf --model gpt-4o-mini
+ 1222  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/Resumes/A_Abdo_Resume_July_2024.pdf --model gpt-4o-mini
+ 1223  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o-mini
+ 1224  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf --model gpt-4o-mini
+ 1225  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o-mini
+ 1226  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_java_developer.pdf --model gpt-4o-mini
+ 1227  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o-mini
+ 1228  time python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o-mini
+ 1229  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o-mini
+ 1230  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o
+ 1231  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_front_end_engineer.pdf --model gpt-4o
+ 1232  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_full_stack_engineer.pdf --model gpt-4o
+ 1233  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o
+ 1234  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o
+ 1235  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o
+ 1236  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o
+ 1237  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o
+ 1238  time python match_resume_jd_optimized.py Data/Resumes/alfred_pennyworth_pm.pdf Data/JobDescription/job_desc_product_manager.pdf --model gpt-4o
+ 1240  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+ 1241  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+ 1243  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+ 1245  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf 
+ 1246  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf 
+ 1247  python document_classifier.py Data/Resumes/alfred_pennyworth_pm.pdf --model=gpt-4o
+ 1248  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gpt-4o
+ 1249  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=gpt-4o
+ 1250  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=phi3
+ 1251  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=llama3.2
+ 1252  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=llama3.2:2b
+ 1253  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=llama3.2:3b
+ 1254  python document_classifier.py Data/kaggle/data/data/SALES/18171955.pdf --model=llama3.2:3b
+ 1257  python document_classifier.py Data/kaggle/data/data/BPO/18589927.pdf --model=llama3.2:3b
+ 1259  python document_classifier.py Data/kaggle/data/data/BPO/18589927.pdf --model=gpt-4o
+ 1261  python document_classifier.py Data/kaggle/data/data/BPO/18589927.pdf --model=gpt-4o-mini
+ 1262  python document_classifier.py Data/kaggle/data/data/BPO/18589927.pdf --model=gpt-4o
+ 1267  python document_classifier.py Data/kaggle/data/data/BPO/18589927.pdf --model=gpt-4o-mini
+ 1268  python document_classifier.py Data/JobDescription/job_desc_product_manager.pdf --model=gpt-4o
+ 1269  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gpt-4o
+ 1270  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=phi3
+ 1271  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=llama3.2
+ 1272  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gemini-2.0-flash-exp
+ 1273  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gpt-4o
+ 1274  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=o1
+ 1275  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=o1-preview
+ 1276  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=o1
+ 1278  python document_classifier.py Data/JobDescription/job_desc_brain_surgeon.pdf --model=gpt-4o
+ 1279  python document_classifier.py Data/JobDescription/job_desc_full_stack_engineer.pdf --model=gpt-4o
+ 1280  python document_classifier.py Data/Resumes/A_Abdo_Resume_July_2024.pdf --model=gpt-4o
+ 1281  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model=gpt-4o
+ 1282  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --modelngpt-4o
+ 1283  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model gpt-4o
+ 1284  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf 
+ 1285  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf model=llama3.2
+ 1286  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model=llama3.2
+ 1287  python match_resume_jd_optimized.py Data/Resumes/A_Abdo_Resume_July_2024.pdf Data/JobDescription/job_desc_data_scientist.pdf --model=gpt-4o
+ 1289  history | grep python > foo.txt

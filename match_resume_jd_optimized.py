@@ -383,7 +383,7 @@ def keyword_match_score(resume_text: str, jd_keywords: List[str]) -> float:
 # (2) Domain Check (Minimal Overhead)
 ###############################################################################
 class ResumeJDMatcher:
-    def __init__(self, model: str = "llama2"):
+    def __init__(self, model: str = "llama3.2"):
         self.classifier = DocumentClassifier(model=model)
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         self.text_cache = {}
@@ -419,29 +419,35 @@ class ResumeJDMatcher:
         except Exception as e:
             raise Exception(f"Error extracting text: {e}")
 
-    def check_compatibility(self, resume_path: str, jd_path: str) -> tuple[bool, str]:
-        """Quick compatibility check using domain and title."""
+    def check_compatibility(self, resume_path: str, jd_path: str) -> tuple[bool, str, float]:
+        """Quick compatibility check using domain, title, and field."""
         # If comparing same file, return perfect match
         if resume_path == jd_path:
-            return True, "Same document"
+            return True, "Same document", 1.0
             
         # Extract minimal text needed
         resume_preview = self.extract_text(resume_path, max_chars=1000)
         jd_preview = self.extract_text(jd_path, max_chars=1000)
 
-        # Check domain first (fastest)
-        resume_domain = self.get_cached_domain(resume_preview) or determine_domain(resume_preview)
-        jd_domain = self.get_cached_domain(jd_preview) or determine_domain(jd_preview)
+        # Get classifications
+        resume_class = self.classifier.classify_document(resume_preview[:2500])
+        jd_class = self.classifier.classify_document(jd_preview[:2500])
         
-        self.set_cached_domain(resume_preview, resume_domain)
-        self.set_cached_domain(jd_preview, jd_domain)
-
-        if resume_domain != jd_domain and resume_domain != "unknown" and jd_domain != "unknown":
-            return False, f"Domain mismatch: Resume={resume_domain}, JD={jd_domain}"
-
-        # Only check titles if domains match or are unknown
-        title_match, reason = self.quick_title_check(resume_preview, jd_preview)
-        return title_match, reason
+        # Calculate similarity score based on title and field
+        title_match = resume_class['title'] == jd_class['title']
+        field_match = resume_class['field'] == jd_class['field']
+        
+        # Scoring logic:
+        # - Same title and field: 1.0
+        # - Different title but same field: 0.6
+        # - Different field: 0.0
+        compatibility_score = 1.0 if title_match else 0.6 if field_match else 0.0
+        
+        reason = (f"Resume: {resume_class['title']} ({resume_class['field']}), "
+                 f"JD: {jd_class['title']} ({jd_class['field']})")
+        
+        # Allow proceeding if there's any match (title or field)
+        return (title_match or field_match), reason, compatibility_score
 
     def get_cached_title(self, text: str) -> Optional[str]:
         """Get cached title or None."""
@@ -512,16 +518,16 @@ def main():
     parser.add_argument("jd_pdf", help="Path to job description PDF file")
     parser.add_argument(
         "--model", 
-        default="llama2",
-        help="Model for job classification (default: llama2)"
+        default="gpt-4o",
+        help="Model for job classification (default: gpt-4o)"
     )
     args = parser.parse_args()
 
     matcher = ResumeJDMatcher(model=args.model)
 
     try:
-        # Quick compatibility check
-        is_compatible, reason = matcher.check_compatibility(args.resume_pdf, args.jd_pdf)
+        # Quick compatibility check with score
+        is_compatible, reason, compat_score = matcher.check_compatibility(args.resume_pdf, args.jd_pdf)
         if not is_compatible:
             print(f"\n{reason}")
             print("Final Combined Score: 0.0000")
@@ -618,6 +624,9 @@ def main():
 
     # Final
     final_val = final_score(doc_level, bullet_avg, section_avg)
+
+    # Apply compatibility score to final score
+    final_val = final_val * compat_score  # Reduce score based on title/field match
 
     print("\n=== SECTION-LEVEL PARSING RESULTS ===")
     print("Resume Sections Found:")
