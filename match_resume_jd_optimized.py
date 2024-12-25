@@ -11,10 +11,13 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import logging
+import argparse
+import fitz
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 import openai
 from openai import OpenAI, APIConnectionError, APIStatusError
+from document_classifier import DocumentClassifier
 
 # Configure logging
 logging.basicConfig(level=logging.WARNING)
@@ -34,37 +37,39 @@ CACHE_DIR = ".cache"
 ###############################################################################
 # (1) Simple Domain Detection (FAST: just string checks)
 ###############################################################################
-def determine_domain(text: str) -> str:
-    """
-    Quick domain detection with minimal overhead.
-    Returns one of: 'medical', 'data_science', 'management', or 'unknown'.
-    """
+def determine_domain(text: str, preview_length: int = 1000) -> str:
+    """Optimized domain detection using shorter preview."""
+    text_preview = text[:preview_length].lower()
     domain_keywords = {
         "medical": {
-            "md", "doctor of medicine", "residency", "surgery", "patient",
-            "neurosurgery", "board certification", "clinical"
+            "md", "doctor", "surgery", "patient", "clinical", "medical", "healthcare"
         },
         "data_science": {
-            "machine learning", "neural network", "data scientist",
-            "predictive model", "random forest", "big data", "etl",
-            "analytics", "ai ", "deep learning", "python", "r ", "sql",
-            "predictive analytics"
+            "machine learning", "data scientist", "analytics", "python", "sql", 
+            "data analysis", "statistical", "deep learning"
         },
         "management": {
-            "product manager", "product roadmap", "mrd", "prd",
-            "pricing", "stakeholders", "launch", "business case",
-            "market research", "product vision"
+            "product manager", "stakeholders", "business case", "product management",
+            "roadmap", "product owner", "market research", "product strategy",
+            "customer requirements", "product development"
+        },
+        "engineering": {
+            "software engineer", "full stack", "frontend", "backend", "java",
+            "javascript", "react", "node", "api", "web development"
         }
     }
-    text_l = text.lower()
+    
     best_domain = "unknown"
     best_count = 0
     for dom, keywords in domain_keywords.items():
-        count = sum(1 for kw in keywords if kw in text_l)
+        # Weight longer phrases more heavily
+        count = sum(2 if len(kw.split()) > 1 and kw in text_preview else 
+                   1 if kw in text_preview else 0 
+                   for kw in keywords)
         if count > best_count:
             best_domain = dom
             best_count = count
-    return best_domain
+    return best_domain if best_count > 1 else "unknown"  # Require at least 2 matches
 
 ###############################################################################
 # Caching
@@ -280,9 +285,10 @@ def check_hard_requirements(requirements_text: str, resume_text: str) -> bool:
 # Bullet
 ###############################################################################
 def parse_bullet_sections_for_jd(jd_text: str) -> tuple:
+    """Parse sections with resume-aware handling."""
     sections = parse_jd_sections(jd_text)
-    resp_text = sections.get("Responsibilities", "")
-    req_text = sections.get("Requirements", "")
+    resp_text = sections.get("Responsibilities", sections.get("Professional Experience", ""))
+    req_text = sections.get("Requirements", sections.get("Skills", ""))
 
     resp_lines = [ln.strip() for ln in resp_text.splitlines() if ln.strip()]
     req_lines = [ln.strip() for ln in req_text.splitlines() if ln.strip()]
@@ -358,6 +364,10 @@ def match_jd_sections_with_resume(client: OpenAI,
 # Score Combination
 ###############################################################################
 def final_score(doc_level: float, bullet_avg: float, section_avg: float) -> float:
+    # If doc_level is perfect (1.0), it's likely same document
+    if doc_level >= 0.9999:
+        return 1.0
+    
     doc_bullet = (doc_level ** (1-BULLET_WEIGHT)) * (bullet_avg ** BULLET_WEIGHT)
     final_val = (doc_bullet ** (1-SECTION_WEIGHT)) * (section_avg ** SECTION_WEIGHT)
     return final_val
@@ -372,33 +382,162 @@ def keyword_match_score(resume_text: str, jd_keywords: List[str]) -> float:
 ###############################################################################
 # (2) Domain Check (Minimal Overhead)
 ###############################################################################
-def domain_check(resume_text: str, jd_text: str) -> bool:
-    resume_dom = determine_domain(resume_text)
-    jd_dom = determine_domain(jd_text)
-    if resume_dom == "unknown" or jd_dom == "unknown":
-        return True  # let them proceed if we can't classify
-    return (resume_dom == jd_dom)
+class ResumeJDMatcher:
+    def __init__(self, model: str = "llama2"):
+        self.classifier = DocumentClassifier(model=model)
+        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.text_cache = {}
+        self.title_cache = {}
+        self.domain_cache = {}  # Cache domain results
+
+    def get_cached_domain(self, text: str) -> Optional[str]:
+        """Get cached domain."""
+        text_hash = hashlib.md5(text[:1000].encode()).hexdigest()
+        return self.domain_cache.get(text_hash)
+
+    def set_cached_domain(self, text: str, domain: str):
+        """Cache domain classification."""
+        text_hash = hashlib.md5(text[:1000].encode()).hexdigest()
+        self.domain_cache[text_hash] = domain
+
+    def extract_text(self, pdf_path: str, max_chars: Optional[int] = None) -> str:
+        """Extract text with optional length limit and caching."""
+        cache_key = f"{pdf_path}:{max_chars}"
+        if cache_key in self.text_cache:
+            return self.text_cache[cache_key]
+
+        try:
+            with fitz.open(pdf_path) as doc:
+                text = ""
+                for page in doc:
+                    text += page.get_text()
+                    if max_chars and len(text) >= max_chars:
+                        text = text[:max_chars]
+                        break
+                self.text_cache[cache_key] = text
+                return text
+        except Exception as e:
+            raise Exception(f"Error extracting text: {e}")
+
+    def check_compatibility(self, resume_path: str, jd_path: str) -> tuple[bool, str]:
+        """Quick compatibility check using domain and title."""
+        # If comparing same file, return perfect match
+        if resume_path == jd_path:
+            return True, "Same document"
+            
+        # Extract minimal text needed
+        resume_preview = self.extract_text(resume_path, max_chars=1000)
+        jd_preview = self.extract_text(jd_path, max_chars=1000)
+
+        # Check domain first (fastest)
+        resume_domain = self.get_cached_domain(resume_preview) or determine_domain(resume_preview)
+        jd_domain = self.get_cached_domain(jd_preview) or determine_domain(jd_preview)
+        
+        self.set_cached_domain(resume_preview, resume_domain)
+        self.set_cached_domain(jd_preview, jd_domain)
+
+        if resume_domain != jd_domain and resume_domain != "unknown" and jd_domain != "unknown":
+            return False, f"Domain mismatch: Resume={resume_domain}, JD={jd_domain}"
+
+        # Only check titles if domains match or are unknown
+        title_match, reason = self.quick_title_check(resume_preview, jd_preview)
+        return title_match, reason
+
+    def get_cached_title(self, text: str) -> Optional[str]:
+        """Get cached title or None."""
+        text_hash = hashlib.md5(text[:2500].encode()).hexdigest()
+        return self.title_cache.get(text_hash)
+        
+    def set_cached_title(self, text: str, title: str):
+        """Cache a title classification."""
+        text_hash = hashlib.md5(text[:2500].encode()).hexdigest()
+        self.title_cache[text_hash] = title
+
+    def quick_title_check(self, resume_text: str, jd_text: str) -> tuple[bool, str]:
+        """Quick check of job titles with caching."""
+        # Check cache first
+        resume_title = self.get_cached_title(resume_text)
+        jd_title = self.get_cached_title(jd_text)
+        
+        # Classify if not cached
+        if not resume_title:
+            resume_title = self.classifier.classify_document(resume_text[:2500])
+            self.set_cached_title(resume_text, resume_title)
+            
+        if not jd_title:
+            jd_title = self.classifier.classify_document(jd_text[:2500])
+            self.set_cached_title(jd_text, jd_title)
+
+        # Define related job families
+        job_families = {
+            "tech": {"Software Engineer", "Full Stack Developer", "Frontend Developer", 
+                    "Backend Developer", "DevOps Engineer", "Java Developer"},
+            "data": {"Data Scientist", "Data Analyst", "Machine Learning Engineer", 
+                    "Data Engineer", "Analytics Engineer"},
+            "product": {"Product Manager", "Product Owner", "Program Manager", 
+                       "Project Manager", "Business Analyst"}
+        }
+        
+        # Find job families for both titles
+        resume_family = next((family for family, titles in job_families.items() 
+                            if any(t.lower() in resume_title.lower() for t in titles)), None)
+        jd_family = next((family for family, titles in job_families.items() 
+                         if any(t.lower() in jd_title.lower() for t in titles)), None)
+        
+        # Consider match if in same job family or exact match
+        title_match = (resume_title == jd_title) or (resume_family and resume_family == jd_family)
+        reason = f"Resume Title: {resume_title}, JD Title: {jd_title}"
+        
+        return title_match, reason
+
+def domain_check(resume_text: str, jd_text: str, matcher: ResumeJDMatcher) -> tuple[bool, str]:
+    """Enhanced domain check using both simple keywords and LLM classification."""
+    # Get basic domain check
+    basic_match = determine_domain(resume_text) == determine_domain(jd_text)
+    
+    # Get LLM-based job title match
+    resume_title, jd_title, title_match = matcher.quick_title_check(resume_text, jd_text)
+    
+    reason = f"Resume Title: {resume_title}, JD Title: {jd_title}"
+    
+    # If either method suggests a match, allow it
+    return (basic_match or title_match), reason
 
 ###############################################################################
 # Main
 ###############################################################################
 def main():
-    if len(sys.argv) != 3:
-        print("Usage: python match_resume_jd.py <resume.pdf> <jd.pdf>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Resume-JD Matcher")
+    parser.add_argument("resume_pdf", help="Path to resume PDF file")
+    parser.add_argument("jd_pdf", help="Path to job description PDF file")
+    parser.add_argument(
+        "--model", 
+        default="llama2",
+        help="Model for job classification (default: llama2)"
+    )
+    args = parser.parse_args()
 
-    resume_pdf = sys.argv[1]
-    jd_pdf = sys.argv[2]
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    matcher = ResumeJDMatcher(model=args.model)
 
-    resume_text = extract_text_from_pdf(resume_pdf)
-    jd_text = extract_text_from_pdf(jd_pdf)
+    try:
+        # Quick compatibility check
+        is_compatible, reason = matcher.check_compatibility(args.resume_pdf, args.jd_pdf)
+        if not is_compatible:
+            print(f"\n{reason}")
+            print("Final Combined Score: 0.0000")
+            return
 
-    # Quick domain check with minimal overhead
-    if not domain_check(resume_text, jd_text):
-        print("\nDomain mismatch => final = 0.0\n")
-        print("Final Combined Score: 0.0000")
+        # Only extract full text if compatible
+        resume_text = matcher.extract_text(args.resume_pdf)
+        jd_text = matcher.extract_text(args.jd_pdf)
+
+        # Continue with detailed matching...
+
+    except Exception as e:
+        print(f"Error in preliminary checks: {e}")
         return
+
+    client = matcher.client
 
     jd_sections = parse_jd_sections(jd_text)
     req_text = jd_sections.get("Requirements", "")
