@@ -269,16 +269,80 @@ def extract_top_keywords_from_text(text: str, top_n: int = TOP_N_KEYWORDS) -> Li
 # Requirements
 ###############################################################################
 HARD_REQ_MARKERS = {
-    "required", "must", "mandatory", "doctor", "residency", "board certification",
-    "10+ years",
+    "required", "must", "mandatory", "doctor", "residency", "board certification"
 }
 
+def extract_experience_years(text: str) -> int:
+    """Extract years of experience from text, handling various formats."""
+    import re
+    
+    # Common patterns
+    patterns = [
+        r'(\d+)\+?\s*(?:years?|yrs?)(?:\s+of)?\s+(?:of\s+)?experience',  # "20+ years experience"
+        r'experience\s+(?:of\s+)?(\d+)\+?\s*(?:years?|yrs?)',  # "experience of 20 years"
+        r'(?:over|more than)\s+(\d+)\s*(?:years?|yrs?)',  # "over 20 years"
+        r'(\d+)(?:-|\s*to\s*)(\d+)\s*(?:years?|yrs?)',  # "15-20 years"
+    ]
+    
+    max_years = 0
+    for pattern in patterns:
+        matches = re.finditer(pattern, text.lower())
+        for match in matches:
+            if len(match.groups()) == 2:  # Range pattern
+                start, end = map(int, match.groups())
+                max_years = max(max_years, end)
+            else:
+                years = int(match.group(1))
+                max_years = max(max_years, years)
+    
+    # Also look for work history duration
+    try:
+        # Find dates like "2017 – Present" or "1999 - 2002"
+        date_pattern = r'(\d{4})\s*[-–]\s*(Present|\d{4})'
+        dates = re.findall(date_pattern, text)
+        if dates:
+            current_year = 2024  # Or use datetime.now().year
+            total_years = 0
+            for start, end in dates:
+                end_year = current_year if end == 'Present' else int(end)
+                total_years += end_year - int(start)
+            max_years = max(max_years, total_years)
+    except:
+        pass
+        
+    return max_years
+
+def check_experience_requirement(requirement: str, resume_text: str) -> bool:
+    """Check if resume meets years of experience requirement."""
+    import re
+    
+    # Extract required years
+    req_years = extract_experience_years(requirement)
+    if not req_years:
+        return True  # No explicit requirement found
+        
+    # Extract experience from resume
+    resume_years = extract_experience_years(resume_text)
+    if not resume_years:
+        return True  # Give benefit of doubt if no explicit mention
+        
+    logger.debug(f"Required years: {req_years}, Resume years: {resume_years}")
+    return resume_years >= req_years
+
 def check_hard_requirements(requirements_text: str, resume_text: str) -> bool:
+    """Check both basic requirements and experience requirements."""
     req_lower = requirements_text.lower()
     res_lower = resume_text.lower()
+    
+    # Check basic hard requirements
     for marker in HARD_REQ_MARKERS:
         if marker in req_lower and marker not in res_lower:
             return False
+            
+    # Check experience requirements
+    if not check_experience_requirement(req_lower, res_lower):
+        return False
+        
     return True
 
 ###############################################################################
