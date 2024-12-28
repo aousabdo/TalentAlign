@@ -32,7 +32,7 @@ logging.getLogger('googleapiclient').setLevel(logging.ERROR)
 class DocumentClassifier:
     def __init__(self, model: str = "llama3.2", doc_type: str = "resume"):
         """
-        :param model: The model name (e.g., 'gpt-4' or 'gemini-bison')
+        :param model: The model name (e.g., 'gpt-4' or 'gemini-2.0-flash-exp')
         :param doc_type: Either 'resume' or 'jd' (job description). This determines which default extraction method to use.
         """
         self.model = model
