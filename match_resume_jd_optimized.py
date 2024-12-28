@@ -427,133 +427,277 @@ def match_jd_sections_with_resume(client: OpenAI,
 ###############################################################################
 # Score Combination
 ###############################################################################
-def final_score(doc_level: float, bullet_avg: float, section_avg: float) -> float:
-    # If doc_level is perfect (1.0), it's likely same document
-    if doc_level >= 0.9999:
-        return 1.0
-    
-    doc_bullet = (doc_level ** (1-BULLET_WEIGHT)) * (bullet_avg ** BULLET_WEIGHT)
-    final_val = (doc_bullet ** (1-SECTION_WEIGHT)) * (section_avg ** SECTION_WEIGHT)
-    return final_val
-
-def keyword_match_score(resume_text: str, jd_keywords: List[str]) -> float:
-    if not jd_keywords:
-        return 0.0
-    r_lower = resume_text.lower()
-    matched = sum(kw.lower() in r_lower for kw in jd_keywords)
-    return matched / len(jd_keywords)
-
-###############################################################################
-# (2) Domain Check (Minimal Overhead)
-###############################################################################
 class ResumeJDMatcher:
-    def __init__(self, model: str = "llama3.2"):
-        self.classifier = DocumentClassifier(model=model)
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        self.text_cache = {}
+    def __init__(self, model: str = "gpt-4o"):
+        self.model = model
+        self.resume_classifier = DocumentClassifier(model=model, doc_type="resume")
+        self.jd_classifier = DocumentClassifier(model=model, doc_type="jd")
+        self.client = OpenAI()
         self.title_cache = {}
-        self.domain_cache = {}  # Cache domain results
+        self.text_cache = {}
+        self.resume_data = None
+        self.jd_data = None
 
-    def get_cached_domain(self, text: str) -> Optional[str]:
-        """Get cached domain."""
-        text_hash = hashlib.md5(text[:1000].encode()).hexdigest()
-        return self.domain_cache.get(text_hash)
+    def keyword_match_score(self, resume_text: str, jd_keywords: List[str]) -> float:
+        """Calculate keyword match score."""
+        if not jd_keywords:
+            return 0.0
+        r_lower = resume_text.lower()
+        matched = sum(kw.lower() in r_lower for kw in jd_keywords)
+        return matched / len(jd_keywords)
 
-    def set_cached_domain(self, text: str, domain: str):
-        """Cache domain classification."""
-        text_hash = hashlib.md5(text[:1000].encode()).hexdigest()
-        self.domain_cache[text_hash] = domain
+    def get_llm_match_score(self, resume_data: Dict, jd_data: Dict) -> tuple[float, str]:
+        """Use LLM to evaluate match and provide reasoning."""
+        prompt = f"""
+        You are an expert technical recruiter evaluating a job match. Consider transferable skills and experience.
+        
+        Job Requirements:
+        - Title: {jd_data.get('job_title')}
+        - Required Skills: {', '.join(jd_data.get('required_skills', []))}
+        - Responsibilities: {', '.join(jd_data.get('responsibilities', []))}
+        - Education: {jd_data.get('required_education_level')}
+        - Years Required: {jd_data.get('years_of_experience_required')}
 
-    def extract_text(self, pdf_path: str, max_chars: Optional[int] = None) -> str:
-        """Extract text with optional length limit and caching."""
-        cache_key = f"{pdf_path}:{max_chars}"
-        if cache_key in self.text_cache:
-            return self.text_cache[cache_key]
+        Candidate Profile:
+        - Current Title: {resume_data.get('current_or_most_recent_job_title')}
+        - Skills: {', '.join(resume_data.get('skills', []))}
+        - Years Experience: {resume_data.get('years_of_experience')}
+        - Summary: {resume_data.get('summary')}
+
+        Consider:
+        1. Direct skill matches
+        2. Transferable skills and experience
+        3. Career level and leadership
+        4. Technical depth and breadth
+        5. Problem-solving abilities
+
+        Important Notes:
+        - Data Scientists often have strong programming/engineering skills
+        - ML/AI skills transfer well to software development
+        - Senior technical roles share leadership competencies
+        - Database/Data modeling skills transfer across domains
+        - Cloud/Big Data experience is valuable for all technical roles
+        - System architecture skills are universal
+        - API development is common across roles
+        - Problem-solving and analytical skills are transferable
+
+        Evaluate potential for success in this role, considering ALL transferable skills and experience.
+        Be open-minded about career transitions between technical roles.
+
+        Respond with JSON only:
+        {{
+            "match_score": <float 0-1>,
+            "reasoning": "<brief explanation>",
+            "transferable_skills": ["skill1", "skill2"],
+            "skill_gaps": ["skill1", "skill2"],
+            "strengths": ["strength1", "strength2"],
+            "potential_success": <float 0-1>
+        }}
+        """
 
         try:
-            with fitz.open(pdf_path) as doc:
-                text = ""
-                for page in doc:
-                    text += page.get_text()
-                    if max_chars and len(text) >= max_chars:
-                        text = text[:max_chars]
-                        break
-                self.text_cache[cache_key] = text
-                return text
+            response = openai.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "You are an expert technical recruiter. Consider transferable skills and career transitions."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                response_format={"type": "json_object"},
+                temperature=0
+            )
+            
+            result = json.loads(response.choices[0].message.content)
+            logger.debug(f"LLM Match Analysis: {result}")
+            
+            # Store full analysis for reporting
+            self.last_analysis = result
+            
+            # Use average of match_score and potential_success
+            final_score = (result["match_score"] + result.get("potential_success", result["match_score"])) / 2
+            return final_score, result["reasoning"]
+            
         except Exception as e:
-            raise Exception(f"Error extracting text: {e}")
+            logger.error(f"Error getting LLM match score: {e}")
+            return 0.7, "Error in LLM analysis, defaulting to neutral score"
+
+    def final_score(self, doc_level: float, bullet_avg: float, section_avg: float) -> tuple[float, float]:
+        """Calculate final score incorporating LLM analysis."""
+        if doc_level >= 0.9999:  # Same document
+            return 1.0, 1.0
+            
+        try:
+            # Get LLM score
+            llm_score, reasoning = self.get_llm_match_score(self.resume_data, self.jd_data)
+            logger.debug(f"LLM Score: {llm_score}, Reason: {reasoning}")
+            
+            # Calculate traditional score with adjusted weights
+            # More weight to bullet matching (most specific)
+            doc_bullet = (doc_level * 0.2) + (bullet_avg * 0.8)
+            
+            # More weight to bullets/sections than doc-level
+            traditional_score = (doc_bullet * 0.7) + (section_avg * 0.3)
+            
+            # Penalize low LLM scores more heavily
+            if llm_score < 0.7:
+                traditional_score *= (llm_score / 0.7)  # Scale down traditional score
+            
+            # Weight LLM score more heavily
+            final = (traditional_score * 0.3) + (llm_score * 0.7)
+            
+            # Apply role-specific adjustments
+            is_senior = any(word in str(self.resume_data.get('current_or_most_recent_job_title', '')).lower() 
+                           for word in ['senior', 'principal', 'lead', 'chief', 'head'])
+            
+            # Bonus only for very strong matches
+            if final > 0.8 and llm_score > 0.8:
+                bonuses = 0.0
+                
+                # Title match bonus
+                if self.resume_data.get('current_or_most_recent_job_title', '').lower() == self.jd_data.get('job_title', '').lower():
+                    bonuses += 0.1
+                    
+                # Experience bonus
+                try:
+                    required_years = int(self.jd_data.get('years_of_experience_required', '0'))
+                    actual_years = int(self.resume_data.get('years_of_experience', '0'))
+                    if actual_years >= required_years * 1.5:
+                        bonuses += 0.05
+                except ValueError:
+                    pass
+                    
+                # Skill match bonus
+                if doc_level > 0.85 and bullet_avg > 0.8:
+                    bonuses += 0.05
+                    
+                final = min(1.0, final + bonuses)
+                
+            return final, llm_score
+            
+        except Exception as e:
+            logger.error(f"Error in LLM scoring: {e}")
+            return traditional_score * 0.5, 0.0  # Penalize errors
 
     def check_compatibility(self, resume_path: str, jd_path: str) -> tuple[bool, str, float]:
-        """Quick compatibility check using domain, title, and field."""
-        # If comparing same file, return perfect match
-        if resume_path == jd_path:
-            return True, "Same document", 1.0
+        """Quick compatibility check using LLM."""
+        # Get structured data
+        self.resume_data = self.resume_classifier.process_file(resume_path)
+        self.jd_data = self.jd_classifier.process_file(jd_path)
+        
+        logger.debug(f"Resume data: {self.resume_data}")
+        logger.debug(f"JD data: {self.jd_data}")
+        
+        # Get LLM score first
+        llm_score, reasoning = self.get_llm_match_score(self.resume_data, self.jd_data)
+        logger.debug(f"Initial LLM Score: {llm_score}, Reason: {reasoning}")
+        
+        # Include details in reason
+        reason = (f"Resume: {self.resume_data.get('current_or_most_recent_job_title', '')} "
+                 f"({self.resume_data.get('years_of_experience', 'N/A')} years), "
+                 f"JD: {self.jd_data.get('job_title', '')} "
+                 f"({self.jd_data.get('years_of_experience_required', '')}+ years required)")
+        
+        # Use LLM score as compatibility indicator
+        return llm_score >= 0.5, reason, llm_score
+
+    def extract_text(self, pdf_path: str) -> str:
+        """Extract text from PDF with caching."""
+        if pdf_path in self.text_cache:
+            return self.text_cache[pdf_path]
             
-        # Get classifications (using cache)
-        resume_class = self.classifier.process_file(resume_path)
-        jd_class = self.classifier.process_file(jd_path)
-        
-        # Add debug logging
-        logger.debug(f"Resume classification: {resume_class}")
-        logger.debug(f"JD classification: {jd_class}")
-        
-        # Calculate similarity score based on title and field
-        title_match = resume_class['title'] == jd_class['title']
-        field_match = resume_class['field'] == jd_class['field']
-        
-        compatibility_score = 1.0 if title_match else 0.6 if field_match else 0.0
-        
-        reason = (f"Resume: {resume_class['title']} ({resume_class['field']}), "
-                 f"JD: {jd_class['title']} ({jd_class['field']})")
-        
-        return (title_match or field_match), reason, compatibility_score
+        try:
+            doc = fitz.open(pdf_path)
+            text = ""
+            for page in doc:
+                text += page.get_text()
+            self.text_cache[pdf_path] = text
+            return text
+        except Exception as e:
+            logger.error(f"Error extracting text from {pdf_path}: {e}")
+            return ""
 
-    def get_cached_title(self, text: str) -> Optional[str]:
-        """Get cached title or None."""
-        text_hash = hashlib.md5(text[:2500].encode()).hexdigest()
-        return self.title_cache.get(text_hash)
-        
-    def set_cached_title(self, text: str, title: str):
-        """Cache a title classification."""
-        text_hash = hashlib.md5(text[:2500].encode()).hexdigest()
-        self.title_cache[text_hash] = title
-
-    def quick_title_check(self, resume_text: str, jd_text: str) -> tuple[bool, str]:
-        """Quick check of job titles with caching."""
-        # Check cache first
-        resume_title = self.get_cached_title(resume_text)
-        jd_title = self.get_cached_title(jd_text)
-        
-        # Classify if not cached
-        if not resume_title:
-            resume_title = self.classifier.classify_document(resume_text[:2500])
-            self.set_cached_title(resume_text, resume_title)
+    def check_requirements(self, resume_path: str, jd_path: str) -> bool:
+        """Check all requirements using structured data."""
+        if not hasattr(self, 'resume_data') or not hasattr(self, 'jd_data'):
+            self.resume_data = self.resume_classifier.process_file(resume_path)
+            self.jd_data = self.jd_classifier.process_file(jd_path)
             
-        if not jd_title:
-            jd_title = self.classifier.classify_document(jd_text[:2500])
-            self.set_cached_title(jd_text, jd_title)
-
-        # Define related job families
-        job_families = {
-            "tech": {"Software Engineer", "Full Stack Developer", "Frontend Developer", 
-                    "Backend Developer", "DevOps Engineer", "Java Developer"},
-            "data": {"Data Scientist", "Data Analyst", "Machine Learning Engineer", 
-                    "Data Engineer", "Analytics Engineer"},
-            "product": {"Product Manager", "Product Owner", "Program Manager", 
-                       "Project Manager", "Business Analyst"}
+        # Check education
+        required_edu = self.jd_data.get('required_education_level', '').lower()
+        resume_edu = ' '.join([
+            self.resume_data.get('summary', ''),
+            *[str(e) for e in self.resume_data.get('education', [])],
+            self.resume_data.get('current_or_most_recent_job_title', '')
+        ]).lower()
+        
+        # Check experience
+        required_years = self.jd_data.get('years_of_experience_required', '')
+        resume_years = self.resume_data.get('years_of_experience', '0')
+        try:
+            if required_years and int(resume_years) < int(required_years):
+                logger.debug(f"Experience requirement not met: need {required_years}, has {resume_years}")
+                return False
+        except ValueError:
+            pass  # Skip if can't parse years
+            
+        # Check skills with fuzzy matching
+        required_skills = self.jd_data.get('required_skills', [])
+        resume_skills = {s.lower() for s in self.resume_data.get('skills', [])}
+        resume_text = ' '.join([
+            self.resume_data.get('summary', ''),
+            *[str(s) for s in self.resume_data.get('skills', [])],
+            self.resume_data.get('current_or_most_recent_job_title', '')
+        ]).lower()
+        
+        # Define skill equivalents
+        skill_equivalents = {
+            'python': {'py', 'python3', 'python programming'},
+            'javascript': {'js', 'ecmascript', 'node.js'},
+            'machine learning': {'ml', 'deep learning', 'ai', 'neural networks'},
+            'statistics': {'statistical', 'regression', 'analytics'},
+            'visualization': {'tableau', 'power bi', 'd3', 'charts', 'spotfire'},
+            'sql': {'database', 'postgresql', 'mysql', 'vertica'},
+            'communication': {'collaborative', 'interpersonal', 'leadership'},
+            'problem-solving': {'analytical', 'analysis'},
+            'tensorflow': {'deep learning', 'neural networks', 'ml frameworks'},
+            'scikit-learn': {'sklearn', 'machine learning libraries'}
         }
         
-        # Find job families for both titles
-        resume_family = next((family for family, titles in job_families.items() 
-                            if any(t.lower() in resume_title.lower() for t in titles)), None)
-        jd_family = next((family for family, titles in job_families.items() 
-                         if any(t.lower() in jd_title.lower() for t in titles)), None)
-        
-        # Consider match if in same job family or exact match
-        title_match = (resume_title == jd_title) or (resume_family and resume_family == jd_family)
-        reason = f"Resume Title: {resume_title}, JD Title: {jd_title}"
-        
-        return title_match, reason
+        # Check each required skill
+        missing_skills = []
+        for skill in required_skills:
+            skill_found = False
+            skill_lower = str(skill).lower()
+            
+            # Direct match
+            if skill_lower in resume_skills or skill_lower in resume_text:
+                continue
+                
+            # Check equivalents
+            for main_skill, alternatives in skill_equivalents.items():
+                if (skill_lower in alternatives or 
+                    main_skill in skill_lower or 
+                    any(alt in skill_lower for alt in alternatives)):
+                    if (any(alt in resume_skills for alt in alternatives) or
+                        main_skill in resume_skills or
+                        any(alt in resume_text for alt in alternatives)):
+                        skill_found = True
+                        break
+                        
+            if not skill_found:
+                missing_skills.append(skill)
+                
+        # Allow missing up to 40% of required skills
+        if len(missing_skills) > len(required_skills) * 0.4:
+            logger.debug(f"Missing skills: {missing_skills}")
+            return False
+            
+        return True
 
 def domain_check(resume_text: str, jd_text: str, matcher: ResumeJDMatcher) -> tuple[bool, str]:
     """Enhanced domain check using both simple keywords and LLM classification."""
@@ -575,19 +719,10 @@ def main():
     parser = argparse.ArgumentParser(description="Resume-JD Matcher")
     parser.add_argument("resume_pdf", help="Path to resume PDF file")
     parser.add_argument("jd_pdf", help="Path to job description PDF file")
-    parser.add_argument(
-        "--model", 
-        default="gpt-4o",
-        help="Model for job classification"
-    )
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="Enable debug logging"
-    )
+    parser.add_argument("--model", default="gpt-4o", help="Model for job classification")
+    parser.add_argument("--debug", action="store_true", help="Enable debug logging")
     args = parser.parse_args()
 
-    # Set logging level based on debug flag
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
         logger.debug("Debug logging enabled")
@@ -597,125 +732,102 @@ def main():
     matcher = ResumeJDMatcher(model=args.model)
 
     try:
-        # Quick compatibility check with score
-        is_compatible, reason, compat_score = matcher.check_compatibility(args.resume_pdf, args.jd_pdf)
-        if not is_compatible:
-            print(f"\n{reason}")
-            print("Final Combined Score: 0.0000")
-            return
-
-        # Only extract full text if compatible
+        # Get structured data and text
+        matcher.resume_data = matcher.resume_classifier.process_file(args.resume_pdf)
+        matcher.jd_data = matcher.jd_classifier.process_file(args.jd_pdf)
         resume_text = matcher.extract_text(args.resume_pdf)
         jd_text = matcher.extract_text(args.jd_pdf)
 
-        # Continue with detailed matching...
+        # Calculate all scores first
+        client = matcher.client
+        
+        # Doc-level similarity
+        texts_to_embed = [resume_text, jd_text]
+        embeddings = batch_embed_all_texts(client, texts_to_embed)
+        doc_sim = cosine_similarity(embeddings[resume_text], embeddings[jd_text])
+
+        # TF-IDF matching
+        jd_keywords = extract_top_keywords_from_text(jd_text, TOP_N_KEYWORDS)
+        tfidf_sc = matcher.keyword_match_score(resume_text, jd_keywords)
+        doc_level = ALPHA * doc_sim + (1 - ALPHA) * tfidf_sc
+
+        # Bullet matching
+        resp_lines, req_lines = parse_bullet_sections_for_jd(jd_text)
+        bullet_sc_resp = calculate_bullet_score(resp_lines, resume_text, client)
+        bullet_sc_req = calculate_bullet_score(req_lines, resume_text, client)
+        bullet_avg = (bullet_sc_resp + bullet_sc_req) / 2.0
+
+        # Section matching
+        resume_sections = parse_resume_sections(resume_text)
+        jd_sections = parse_jd_sections(jd_text)
+        section_avg = match_jd_sections_with_resume(client, jd_sections, resume_sections)
+
+        # Get LLM analysis
+        llm_score, reasoning = matcher.get_llm_match_score(matcher.resume_data, matcher.jd_data)
+        
+        # Show all scores
+        print("\n=== MATCH SCORES ===")
+        print(f"Document Similarity:     {doc_sim:.4f}")
+        print(f"TF-IDF Score:           {tfidf_sc:.4f}")
+        print(f"Bullet (Resp) Score:    {bullet_sc_resp:.4f}")
+        print(f"Bullet (Req) Score:     {bullet_sc_req:.4f}")
+        print(f"Bullet Average:         {bullet_avg:.4f}")
+        print(f"Section Alignment:      {section_avg:.4f}")
+        print(f"LLM Match Score:        {llm_score:.4f}")
+
+        # Show LLM analysis
+        print("\n=== LLM ANALYSIS ===")
+        print(f"Match Score: {llm_score:.4f}")
+        print(f"Reasoning: {reasoning}")
+        
+        if hasattr(matcher, 'last_analysis'):
+            print("\nTransferable Skills:")
+            for skill in matcher.last_analysis.get('transferable_skills', []):
+                print(f"- {skill}")
+            print("\nSkill Gaps:")
+            for gap in matcher.last_analysis.get('skill_gaps', []):
+                print(f"- {gap}")
+            print("\nStrengths:")
+            for strength in matcher.last_analysis.get('strengths', []):
+                print(f"- {strength}")
+
+        # Calculate final score
+        final_val, _ = matcher.final_score(doc_level, bullet_avg, section_avg)
+        
+        # Scale final score based on LLM score
+        if llm_score < 0.5:
+            print("\nLLM indicates low match potential")
+            # Scale down the score based on LLM assessment
+            final_val *= (llm_score / 0.5)  # Linear scaling
+            
+        print(f"\nFinal Combined Score: {final_val:.4f}")
 
     except Exception as e:
-        print(f"Error in preliminary checks: {e}")
+        print(f"Error: {e}")
         return
 
-    client = matcher.client
-
-    jd_sections = parse_jd_sections(jd_text)
-    req_text = jd_sections.get("Requirements", "")
-    if not check_hard_requirements(req_text, resume_text):
-        print("\nResume fails must-have/hard requirements!")
-        print("Final Combined Score: 0.0000")
-        return
-
-    # Gather texts to embed
-    texts_to_embed = [resume_text, jd_text]
-    resp_lines, req_lines = parse_bullet_sections_for_jd(jd_text)
-    texts_to_embed.extend(ln for ln in resp_lines if ln.strip())
-    texts_to_embed.extend(ln for ln in req_lines if ln.strip())
-
-    resume_sections = parse_resume_sections(resume_text)
-    jd_vals = parse_jd_sections(jd_text)
-    for val in resume_sections.values():
-        if val.strip():
-            texts_to_embed.append(val)
-    for val in jd_vals.values():
-        if val.strip():
-            texts_to_embed.append(val)
-
-    # Batch
-    try:
-        embeddings = batch_embed_all_texts(client, texts_to_embed)
-    except (APIConnectionError, APIStatusError) as e:
-        print(f"OpenAI API error: {str(e)}")
-        sys.exit(1)
-
-    # Doc-level
-    r_emb = embeddings[resume_text]
-    j_emb = embeddings[jd_text]
-    doc_sim = cosine_similarity(r_emb, j_emb)
-    if CLAMP_THRESHOLD and doc_sim < CLAMP_THRESHOLD:
-        doc_sim = 0.0
-
-    # TF-IDF
-    jd_keywords = extract_top_keywords_from_text(jd_text, TOP_N_KEYWORDS)
-    tfidf_sc = keyword_match_score(resume_text, jd_keywords)
-    doc_level = ALPHA * doc_sim + (1 - ALPHA) * tfidf_sc
-
-    # Bullet
-    bullet_sims_resp = []
-    for line in resp_lines:
-        if line.strip() and line in embeddings and embeddings[line] is not None:
-            sim = cosine_similarity(embeddings[line], r_emb)
-            bullet_sims_resp.append(sim)
-    bullet_sims_req = []
-    for line in req_lines:
-        if line.strip() and line in embeddings and embeddings[line] is not None:
-            sim = cosine_similarity(embeddings[line], r_emb)
-            bullet_sims_req.append(sim)
-    bullet_sc_resp = sum(bullet_sims_resp)/len(bullet_sims_resp) if bullet_sims_resp else 0.0
-    bullet_sc_req = sum(bullet_sims_req)/len(bullet_sims_req) if bullet_sims_req else 0.0
-    bullet_avg = (bullet_sc_resp + bullet_sc_req)/2.0
-
-    # Section-level
-    section_sims = []
-    for jd_sec_text in jd_vals.values():
-        if not jd_sec_text.strip() or jd_sec_text not in embeddings:
+def calculate_bullet_score(bullet_lines: List[str], resume_text: str, client: OpenAI) -> float:
+    """Calculate similarity score between bullet points and resume."""
+    if not bullet_lines:
+        return 0.0
+        
+    # Embed resume text once
+    resume_emb = embed_text(client, resume_text)
+    if resume_emb is None:
+        return 0.0
+        
+    # Embed and compare each bullet
+    bullet_sims = []
+    for line in bullet_lines:
+        if not line.strip():
             continue
-        jd_emb = embeddings[jd_sec_text]
-        if jd_emb is None:
+        bullet_emb = embed_text(client, line)
+        if bullet_emb is None:
             continue
-        best_score = 0.0
-        for r_sec_text in resume_sections.values():
-            if not r_sec_text.strip() or r_sec_text not in embeddings:
-                continue
-            r_semb = embeddings[r_sec_text]
-            if r_semb is None:
-                continue
-            score = cosine_similarity(jd_emb, r_semb)
-            if score > best_score:
-                best_score = score
-        section_sims.append(best_score)
-    section_avg = sum(section_sims)/len(section_sims) if section_sims else 1.0
-
-    # Final
-    final_val = final_score(doc_level, bullet_avg, section_avg)
-
-    # Apply compatibility score to final score
-    final_val = final_val * compat_score  # Reduce score based on title/field match
-
-    print("\n=== SECTION-LEVEL PARSING RESULTS ===")
-    print("Resume Sections Found:")
-    for k,v in resume_sections.items():
-        print(f"  [{k}] => {len(v)} chars")
-
-    print("\nJD Sections Found:")
-    for k,v in jd_vals.items():
-        print(f"  [{k}] => {len(v)} chars")
-
-    print("\n=== MATCH RESULTS ===")
-    print(f"Document Embedding Similarity: {doc_sim:.4f}")
-    print(f"TF-IDF Keyword Score:          {tfidf_sc:.4f}")
-    print(f"Bullet (Resp) Score:           {bullet_sc_resp:.4f}")
-    print(f"Bullet (Req) Score:            {bullet_sc_req:.4f}")
-    print(f"Bullet Average:                {bullet_avg:.4f}")
-    print(f"Section-level alignment:       {section_avg:.4f}")
-    print(f"Final Combined Score:          {final_val:.4f}")
+        sim = cosine_similarity(bullet_emb, resume_emb)
+        bullet_sims.append(sim)
+        
+    return sum(bullet_sims)/len(bullet_sims) if bullet_sims else 0.0
 
 if __name__ == "__main__":
     main()
